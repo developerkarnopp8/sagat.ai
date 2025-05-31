@@ -14,9 +14,9 @@
     <v-navigation-drawer v-model="drawer" app>
       <v-list>
         <v-list-item
-          prepend-avatar="https://i.pravatar.cc/150?img=1"
-          title="User Name"
-          subtitle="user@email.com"
+            :prepend-avatar="gustavoAvatar"
+          :title="userStore?.canvas?.name"
+          :subtitle="userStore?.canvas?.email"
         ></v-list-item>
       </v-list>
 
@@ -60,4 +60,9 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 const drawer = ref(false);
+import { useUserStore } from '@/store/user.store';
+
+import gustavoAvatar from '@/assets/gustavo_karnopp.jpeg';
+
+const userStore = useUserStore();
 </script>
