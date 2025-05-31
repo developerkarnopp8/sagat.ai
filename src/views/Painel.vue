@@ -1,0 +1,3 @@
+<template>
+    PAINEL
+</template>
