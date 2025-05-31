@@ -66,7 +66,7 @@
 
 <script setup lang="ts">
 import { ref } from 'vue';
-import { useAuthStore } from '@/store/auth.store';
+import { signUp } from '@/services/authService';
 
 const name = ref('');
 const email = ref('');
@@ -74,13 +74,11 @@ const password = ref('');
 const showPassword = ref(false);
 const loading = ref(false);
 
-const authStore = useAuthStore();
-
 const onSubmit = async () => {
   loading.value = true;
   await new Promise(resolve => setTimeout(resolve, 1000));
   try {
-     await authStore.createUser({
+     await signUp({
       name: name.value,
       email: email.value,
       password: password.value,

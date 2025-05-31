@@ -14,7 +14,27 @@ const api = axios.create({
 });
 
 export const signUp = async (user: UserSignUpPayload): Promise<AxiosResponse<{token: AuthTokenResponse}>> => {
-  return await api.post('/auth/sign_up', { user });
+  const authStore = useAuthStore();
+    try {
+
+        await nextTick();
+        
+        const res = await api.post('/auth/sign_up', { user });
+
+        const tokenAuth = res.data;
+        
+        if (tokenAuth.token) {
+            authStore.setToken(tokenAuth.token);
+            await nextTick();
+            router.push('/painel');
+        }
+        
+        return res;
+
+    } catch (error) {
+        console.error('Erro:', error);
+        throw error;
+    }
 };
 
 export const signIn = async (user: UserSignInPayload): Promise<AxiosResponse<{ token: AuthTokenResponse }>> => {
@@ -22,7 +42,7 @@ export const signIn = async (user: UserSignInPayload): Promise<AxiosResponse<{ t
     try {
 
         await nextTick();
-        
+
         const res = await api.put('/auth/sign_in', { user })
 
         const tokenAuth = res.data;

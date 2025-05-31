@@ -52,17 +52,12 @@
 
 <script setup lang="ts">
 import { ref } from 'vue';
-// import { useAuthStore } from '@/store/auth.store';
 import { signIn } from '@/services/authService';
-// import { useRouter } from 'vue-router';
 
 const email = ref('');
 const password = ref('');
 const showPassword = ref(false);
 const loading = ref(false);
-
-// const authStore = useAuthStore();
-// const router = useRouter();
 
 const onSubmit = async () => {
   loading.value = true;
@@ -72,7 +67,6 @@ const onSubmit = async () => {
       email: email.value,
       password: password.value,
     })
-    // router.push('/painel');
   } catch (error: any) {
     console.error('Erro ao cadastrar:', error);
   } finally {
