@@ -1,13 +1,13 @@
 import axios, { AxiosResponse } from 'axios';
-
-import { UserSignUpPayload, UserSignInPayload, AuthTokenResponse } from '@/shared/interfaces/IAuth';
 import { nextTick } from 'vue';
 import router from '@/router';
+
+import { UserSignUpPayload, UserSignInPayload, AuthTokenResponse } from '@/shared/interfaces/IAuth';
+
+import { getDataUser } from '@/services/userDataService';
 import { useAuthStore } from '@/store/auth.store';
 
 const URL = import.meta.env.VITE_BASE_URL_DEV;
-
-console.log(URL, 'teste');
 
 const api = axios.create({
   baseURL: URL,
@@ -25,6 +25,7 @@ export const signUp = async (user: UserSignUpPayload): Promise<AxiosResponse<{to
         
         if (tokenAuth.token) {
             authStore.setToken(tokenAuth.token);
+            await getDataUser()
             await nextTick();
             router.push('/painel');
         }
@@ -49,6 +50,7 @@ export const signIn = async (user: UserSignInPayload): Promise<AxiosResponse<{ t
         
         if (tokenAuth.token) {
             authStore.setToken(tokenAuth.token);
+            await getDataUser()
             await nextTick();
             router.push('/painel');
         }
