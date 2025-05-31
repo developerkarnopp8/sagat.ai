@@ -1,6 +1,9 @@
 import axios, { AxiosResponse } from 'axios';
 
 import { UserSignUpPayload, UserSignInPayload, AuthTokenResponse } from '@/shared/interfaces/IAuth';
+import { nextTick } from 'vue';
+import router from '@/router';
+import { useAuthStore } from '@/store/auth.store';
 
 const URL = import.meta.env.VITE_BASE_URL_DEV;
 
@@ -15,5 +18,25 @@ export const signUp = async (user: UserSignUpPayload): Promise<AxiosResponse<{to
 };
 
 export const signIn = async (user: UserSignInPayload): Promise<AxiosResponse<{ token: AuthTokenResponse }>> => {
-  return await api.put('/auth/sign_in', { user });
+    const authStore = useAuthStore();
+    try {
+
+        await nextTick();
+        
+        const res = await api.put('/auth/sign_in', { user })
+
+        const tokenAuth = res.data;
+        
+        if (tokenAuth.token) {
+            authStore.setToken(tokenAuth.token);
+            await nextTick();
+            router.push('/painel');
+        }
+        
+        return res;
+
+    } catch (error) {
+        console.error('Erro:', error);
+        throw error;
+    }
 };

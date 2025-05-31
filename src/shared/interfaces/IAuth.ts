@@ -10,5 +10,5 @@ export interface UserSignInPayload {
 }
 
 export interface AuthTokenResponse {
-  token: string;
+  token: null;
 }
