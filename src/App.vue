@@ -5,7 +5,7 @@
       <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
       <v-app-bar-title>Sagat Pay</v-app-bar-title>
       <v-spacer></v-spacer>
-      <v-btn icon>
+      <v-btn to="/perfil" icon>
         <v-icon>mdi-account-circle</v-icon>
       </v-btn>
     </v-app-bar>

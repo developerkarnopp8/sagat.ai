@@ -17,6 +17,12 @@ const routes: RouteRecordRaw[] = [
     component: () => import('../views/Painel.vue'),
      meta: { requiresAuth: true },
   },
+  { 
+    path: '/perfil', 
+    name: 'Perfil', 
+    component: () => import('../views/Perfil.vue'),
+     meta: { requiresAuth: true },
+  },
 ]
 
 const router = createRouter({

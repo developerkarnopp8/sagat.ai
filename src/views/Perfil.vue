@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
-import { useAuthStore } from '../../stores/auth';
-import { useNotificationsStore } from '../../stores/notifications';
+import { useUserStore } from '@/store/user.store';
+import { useNotificationsStore } from '@/store/notifications.store';
 import { useForm } from 'vee-validate';
 import * as yup from 'yup';
-import api from '../../services/api';
+// import api from '../../services/api';
 
-const authStore = useAuthStore();
+const userStore = useUserStore();
 const notificationsStore = useNotificationsStore();
 const loading = ref(false);
 const editMode = ref(false);
@@ -36,15 +36,12 @@ const schema = yup.object({
 const { handleSubmit, errors, setFieldValue, values } = useForm({
   validationSchema: schema,
   initialValues: {
-    name: authStore.user?.name || '',
-    email: authStore.user?.email || '',
+    name: userStore?.canvas?.name || '',
+    email: userStore?.canvas?.email || '',
     currentPassword: '',
     newPassword: '',
     confirmPassword: '',
-  },
-  context: {
-    isChangingPassword: false,
-  },
+  }
 });
 
 // Password visibility toggles
@@ -59,8 +56,8 @@ const isChangingPassword = ref(false);
 const toggleEditMode = () => {
   if (editMode.value) {
     // Reset form when canceling edit
-    setFieldValue('name', authStore.user?.name || '');
-    setFieldValue('email', authStore.user?.email || '');
+    setFieldValue('name', userStore?.canvas?.name || '');
+    setFieldValue('email', userStore?.canvas?.email || '');
     setFieldValue('currentPassword', '');
     setFieldValue('newPassword', '');
     setFieldValue('confirmPassword', '');
@@ -75,56 +72,56 @@ const togglePasswordChange = () => {
   isChangingPassword.value = !isChangingPassword.value;
 };
 
-// Submit form
+
 const onSubmit = handleSubmit(async (values: { name: any; email: any; currentPassword: any; newPassword: any; }) => {
   loading.value = true;
   
-  try {
-    const userData: {
-      name: any;
-      email: any;
-      current_password?: any;
-      new_password?: any;
-    } = {
-      name: values.name,
-      email: values.email,
-    };
+  // try {
+  //   const userData: {
+  //     name: any;
+  //     email: any;
+  //     current_password?: any;
+  //     new_password?: any;
+  //   } = {
+  //     name: values.name,
+  //     email: values.email,
+  //   };
     
-    // Add password data if changing password
-    if (isChangingPassword.value) {
-      userData.current_password = values.currentPassword;
-      userData.new_password = values.newPassword;
-    }
+  //   // Add password data if changing password
+  //   if (isChangingPassword.value) {
+  //     userData.current_password = values.currentPassword;
+  //     userData.new_password = values.newPassword;
+  //   }
     
-    await api.put('/users/infos', userData);
+  //   await api.put('/users/infos', userData);
     
-    // Update user in store
-    await authStore.getUserInfo();
+  //   // Update user in store
+  //   await userStore.getUserInfo();
     
-    notificationsStore.showNotification({
-      text: 'Profile updated successfully',
-      color: 'success',
-    });
+  //   notificationsStore.showNotification({
+  //     text: 'Profile updated successfully',
+  //     color: 'success',
+  //   });
     
-    // Exit edit mode
-    editMode.value = false;
-    isChangingPassword.value = false;
-  } catch (error) {
-    notificationsStore.showNotification({
-      text: 'Failed to update profile',
-      color: 'error',
-    });
-  } finally {
-    loading.value = false;
-  }
+  //   // Exit edit mode
+  //   editMode.value = false;
+  //   isChangingPassword.value = false;
+  // } catch (error) {
+  //   notificationsStore.showNotification({
+  //     text: 'Failed to update profile',
+  //     color: 'error',
+  //   });
+  // } finally {
+  //   loading.value = false;
+  // }
 });
 
-onMounted(() => {
-  // Ensure we have the latest user data
-  if (authStore.isAuthenticated) {
-    authStore.getUserInfo();
-  }
-});
+// onMounted(() => {
+//   // Ensure we have the latest user data
+//   if (userStore.isAuthenticated) {
+//     userStore.getUserInfo();
+//   }
+// });
 </script>
 
 <template>
@@ -141,13 +138,13 @@ onMounted(() => {
           <v-card-item>
             <template v-slot:prepend>
               <v-avatar color="primary" size="large">
-                <span class="text-h5 text-white">{{ authStore.user?.name?.charAt(0) || 'U' }}</span>
+                <span class="text-h5 text-white">{{ userStore?.canvas?.name?.charAt(0) || 'U' }}</span>
               </v-avatar>
             </template>
             <v-card-title>
-              {{ authStore.user?.name || 'User' }}
+              {{ userStore?.canvas?.name || 'User' }}
             </v-card-title>
-            <v-card-subtitle>{{ authStore.user?.email || 'user@example.com' }}</v-card-subtitle>
+            <v-card-subtitle>{{ userStore?.canvas?.email || 'user@example.com' }}</v-card-subtitle>
           </v-card-item>
 
           <v-divider></v-divider>
@@ -160,7 +157,7 @@ onMounted(() => {
                   <v-icon color="primary">mdi-account</v-icon>
                 </template>
                 <v-list-item-title>Name</v-list-item-title>
-                <v-list-item-subtitle>{{ authStore.user?.name }}</v-list-item-subtitle>
+                <v-list-item-subtitle>{{ userStore?.canvas?.name }}</v-list-item-subtitle>
               </v-list-item>
               
               <v-list-item>
@@ -168,7 +165,7 @@ onMounted(() => {
                   <v-icon color="primary">mdi-email</v-icon>
                 </template>
                 <v-list-item-title>Email</v-list-item-title>
-                <v-list-item-subtitle>{{ authStore.user?.email }}</v-list-item-subtitle>
+                <v-list-item-subtitle>{{ userStore?.canvas?.email }}</v-list-item-subtitle>
               </v-list-item>
               
               <v-list-item>
