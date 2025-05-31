@@ -66,27 +66,30 @@
 
 <script setup lang="ts">
 import { ref } from 'vue';
-import { useRouter } from 'vue-router';
+import { useAuthStore } from '@/store/auth.store';
 
-const router = useRouter();
 const name = ref('');
 const email = ref('');
 const password = ref('');
 const showPassword = ref(false);
 const loading = ref(false);
 
+const authStore = useAuthStore();
+
 const onSubmit = async () => {
   loading.value = true;
-  
-  // Simulate API call delay
   await new Promise(resolve => setTimeout(resolve, 1000));
-  
-  // Mock registration - in real app, this would send data to an API
-  if (name.value && email.value && password.value) {
-    router.push('/painel');
+  try {
+     await authStore.createUser({
+      name: name.value,
+      email: email.value,
+      password: password.value,
+    })
+  } catch (error: any) {
+    console.error('Erro ao cadastrar:', error);
+  } finally {
+    loading.value = false;
   }
-  
-  loading.value = false;
 };
 </script>
 
