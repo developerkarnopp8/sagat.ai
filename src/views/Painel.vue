@@ -123,12 +123,14 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
+import { onMounted, ref } from 'vue';
 import { useAuthStore } from '@/store/auth.store';
 import { useUserStore } from '@/store/user.store';
 
 const authStore = useAuthStore();
 const userStore = useUserStore();
+
+onMounted(() => userStore)
 
 const recentTransactions = ref([
   {

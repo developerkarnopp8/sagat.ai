@@ -56,6 +56,7 @@ export const signIn = async (user: UserSignInPayload): Promise<AxiosResponse<{ t
             authStore.setToken(tokenAuth.token);
             await getDataUser();
             await getDataBank();
+            await getDataTransferencias();
             await nextTick();
             router.push('/painel');
         }

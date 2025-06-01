@@ -1,3 +1,4 @@
+import { IUserCanvas } from "@/shared/interfaces/ICanvas";
 import { defineStore } from "pinia";
 
 export const useUserStore = defineStore('useUser', {
