@@ -1,6 +1,6 @@
 <template>
   <v-app>
-    <v-app-bar color="primary" app>
+    <v-app-bar color="primary" app v-if="authStore.isAuthenticated()">
       <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
       <v-app-bar-title>Sagat Pay</v-app-bar-title>
       <v-spacer></v-spacer>
@@ -9,7 +9,7 @@
       </v-btn>
     </v-app-bar>
 
-    <v-navigation-drawer v-model="drawer" app>
+    <v-navigation-drawer v-model="drawer" app v-if="authStore.isAuthenticated()">
       <v-list>
         <v-list-item
             :prepend-avatar="gustavoAvatar"
@@ -33,7 +33,7 @@
       <router-view />
     </v-main>
 
-    <v-bottom-navigation>
+    <v-bottom-navigation v-if="authStore.isAuthenticated()">
       <v-btn to="/painel">
         <v-icon>mdi-view-dashboard</v-icon>
         Painel
@@ -55,19 +55,21 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
+import { onMounted, ref } from 'vue';
 const drawer = ref(false);
-import { useUserStore } from '@/store/user.store';
-
 import gustavoAvatar from '@/assets/gustavo_karnopp.jpeg';
-import { useAuthStore } from './store/auth.store';
+
+import { useUserStore } from '@/store/user.store';
+import { useAuthStore } from '@/store/auth.store';
 import { useRouter } from 'vue-router';
 
 const authStore = useAuthStore();
 const userStore = useUserStore();
+
 const router = useRouter();
 
 const logout = (): void => {
-        authStore.clearToken();
-    }
+    authStore.clearToken();
+}
+
 </script>

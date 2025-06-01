@@ -18,15 +18,17 @@ export const getDataBank = async (): Promise<AxiosResponse<{data: IDataBanco}>> 
         const authStore = useAuthStore();
         
         const res = await api.get('/users/bank_accounts/my', { 
-            headers: {
-                'Content-Type': 'application/json',
-                'Accept': 'application/json',
-                'Authorization': `Bearer ${authStore.token}`,
-                'Cache-Control': 'no-cache',
-            }
-         });
+          headers: {
+              'Content-Type': 'application/json',
+              'Accept': 'application/json',
+              'Authorization': `Bearer ${authStore.token}`,
+              'Cache-Control': 'no-cache',
+          }
+        });
         
-         useBancoStore.setDataBancoCanvas(res?.data)
+        console.log('chamou 1');
+        
+        useBancoStore.setDataBancoCanvas(res?.data)
          
         return res.data;
 

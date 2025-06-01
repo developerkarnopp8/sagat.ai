@@ -14,7 +14,7 @@ export const useAuthStore = defineStore('useAuth', {
             localStorage.removeItem('token');
             localStorage.removeItem('canvas');
         },
-        isAuthenticated() {
+        isAuthenticated() {            
             return !!this.token;
         }
     }

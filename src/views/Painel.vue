@@ -33,18 +33,18 @@
               variant="text"
               color="primary"
               prepend-icon="mdi-bank-transfer"
-              to="/transfer"
+              to="/transferencia"
             >
-              Transfer
+              Transferências
             </v-btn>
             <v-spacer></v-spacer>
             <v-btn
               variant="text"
               color="primary"
               prepend-icon="mdi-text-box-multiple"
-              to="/statements"
+              to="/declaracoes"
             >
-              Statements
+              Declarações
             </v-btn>
           </v-card-actions>
         </v-card>

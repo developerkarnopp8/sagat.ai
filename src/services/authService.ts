@@ -4,9 +4,10 @@ import router from '@/router';
 
 import { UserSignUpPayload, UserSignInPayload, AuthTokenResponse } from '@/shared/interfaces/IAuth';
 
-import { getDataUser } from '@/services/userDataService';
 import { useAuthStore } from '@/store/auth.store';
-import { getDataBank } from './contaBancariaService';
+import { getDataUser } from '@/services/userDataService';
+import { getDataBank } from '@/services/contaBancariaService';
+import { getDataTransferencias } from '@/services/transferenciasService';
 
 const URL = import.meta.env.VITE_BASE_URL_DEV;
 
@@ -28,6 +29,7 @@ export const signUp = async (user: UserSignUpPayload): Promise<AxiosResponse<{to
             authStore.setToken(tokenAuth.token);
             await getDataUser();
             await getDataBank();
+            await getDataTransferencias();
             await nextTick();
             router.push('/painel');
         }

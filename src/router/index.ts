@@ -1,3 +1,4 @@
+import { useAuthStore } from '@/store/auth.store';
 import { createRouter, createWebHistory, type RouteRecordRaw } from 'vue-router'
 
 const routes: RouteRecordRaw[] = [
@@ -53,16 +54,17 @@ const router = createRouter({
   routes,
 })
 
-router.beforeEach((to, from, next) => {
-  const token = localStorage.getItem('token');
+router.beforeEach((to, _from, next) => {
+    const authStore = useAuthStore();
+    const isAuthenticated = authStore.isAuthenticated();
 
-  console.log(token, 'Store');
-  
-  if (to.meta.requiresAuth && !token) {
-    next('/');
-  } else {
-    next();
-  }
+    if (to.path !== '/' && !isAuthenticated) {
+        next('/');
+    } else {
+        const defaultTitle = 'Sagat Pay';
+        document.title = to.meta.title ? `${defaultTitle} | ${to.meta.title}` :  defaultTitle;
+        next();
+    }
 });
 
 export default router;
