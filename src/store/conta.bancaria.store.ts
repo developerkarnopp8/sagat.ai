@@ -1,12 +1,12 @@
+import { IUserCanvas } from "@/shared/interfaces/ICanvas";
 import { defineStore } from "pinia";
 
-export const useUserStore = defineStore('useUser', {
+export const useDtaBancoStore = defineStore('useDataBanco', {
   state: (): { canvas: IUserCanvas } => ({
     canvas: JSON.parse(localStorage.getItem('canvas') || '{}'),
   }),
   actions: {
-    setDataUserCanvas(newData: any) {
-
+    setDataBancoCanvas(newData: any) {
       this.canvas = {
         ...this.canvas,
         ...newData,

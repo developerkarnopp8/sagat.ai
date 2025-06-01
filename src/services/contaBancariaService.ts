@@ -1,9 +1,9 @@
 import axios, { AxiosResponse } from 'axios';
 import { nextTick } from 'vue';
 
-import { useUserStore } from '@/store/user.store';
+import { useDtaBancoStore } from '@/store/conta.bancaria.store';
 import { useAuthStore } from '@/store/auth.store';
-import { IUser } from '@/shared/interfaces/IDataUser';
+import { IDataBanco } from '@/shared/interfaces/IDataBanco';
 
 const URL = import.meta.env.VITE_BASE_URL_DEV;
 
@@ -11,14 +11,13 @@ const api = axios.create({
   baseURL: URL,
 });
 
-export const getDataUser = async (): Promise<AxiosResponse<{user: IUser}>> => {
-  const userStore = useUserStore();
+export const getDataBank = async (): Promise<AxiosResponse<{data: IDataBanco}>> => {
+  const useBancoStore = useDtaBancoStore();
     try {
         await nextTick();
         const authStore = useAuthStore();
-        console.log(authStore.token, 'veio token');
         
-        const res = await api.get('/users/infos', { 
+        const res = await api.get('/users/bank_accounts/my', { 
             headers: {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json',
@@ -27,8 +26,7 @@ export const getDataUser = async (): Promise<AxiosResponse<{user: IUser}>> => {
             }
          });
         
-         console.log(res?.data?.user, 'teste');
-         userStore.setDataUserCanvas(res?.data?.user)
+         useBancoStore.setDataBancoCanvas(res?.data)
          
         return res.data;
 

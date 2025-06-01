@@ -25,6 +25,7 @@
         <v-list-item to="/conta" prepend-icon="mdi-bank" title="Minhas Contas"></v-list-item>
         <v-list-item to="/transferencia" prepend-icon="mdi-bank-transfer" title="Transferências"></v-list-item>
         <v-list-item to="/declaracoes" prepend-icon="mdi-text-box-multiple" title="Declarações"></v-list-item>
+        <v-list-item to="/" @click="logout()" prepend-icon="mdi-logout" title="Sair"></v-list-item>
       </v-list>
     </v-navigation-drawer>
 
@@ -59,6 +60,14 @@ const drawer = ref(false);
 import { useUserStore } from '@/store/user.store';
 
 import gustavoAvatar from '@/assets/gustavo_karnopp.jpeg';
+import { useAuthStore } from './store/auth.store';
+import { useRouter } from 'vue-router';
 
+const authStore = useAuthStore();
 const userStore = useUserStore();
+const router = useRouter();
+
+const logout = (): void => {
+        authStore.clearToken();
+    }
 </script>

@@ -6,6 +6,7 @@ import { UserSignUpPayload, UserSignInPayload, AuthTokenResponse } from '@/share
 
 import { getDataUser } from '@/services/userDataService';
 import { useAuthStore } from '@/store/auth.store';
+import { getDataBank } from './contaBancariaService';
 
 const URL = import.meta.env.VITE_BASE_URL_DEV;
 
@@ -25,7 +26,8 @@ export const signUp = async (user: UserSignUpPayload): Promise<AxiosResponse<{to
         
         if (tokenAuth.token) {
             authStore.setToken(tokenAuth.token);
-            await getDataUser()
+            await getDataUser();
+            await getDataBank();
             await nextTick();
             router.push('/painel');
         }
@@ -50,7 +52,8 @@ export const signIn = async (user: UserSignInPayload): Promise<AxiosResponse<{ t
         
         if (tokenAuth.token) {
             authStore.setToken(tokenAuth.token);
-            await getDataUser()
+            await getDataUser();
+            await getDataBank();
             await nextTick();
             router.push('/painel');
         }

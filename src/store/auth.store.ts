@@ -13,7 +13,6 @@ export const useAuthStore = defineStore('useAuth', {
             this.token = null;
             localStorage.removeItem('token');
             localStorage.removeItem('canvas');
-            localStorage.removeItem('DadosUsuarioADM');
         },
         isAuthenticated() {
             return !!this.token;
