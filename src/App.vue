@@ -1,6 +1,11 @@
 <template>
   <v-app>
-    <v-app-bar color="primary" app v-if="authStore.isAuthenticated()">
+    <v-progress-linear
+      v-if="authStore.isLoading"
+      indeterminate
+      color="primary"
+    />
+    <v-app-bar color="primary" app v-if="authStore.isAuthenticated">
       <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
       <v-app-bar-title>Sagat Pay</v-app-bar-title>
       <v-spacer></v-spacer>
@@ -9,7 +14,7 @@
       </v-btn>
     </v-app-bar>
 
-    <v-navigation-drawer v-model="drawer" app v-if="authStore.isAuthenticated()">
+    <v-navigation-drawer v-model="drawer" app v-if="authStore.isAuthenticated">
       <v-list>
         <v-list-item
             :prepend-avatar="gustavoAvatar"
@@ -33,7 +38,7 @@
       <router-view />
     </v-main>
 
-    <v-bottom-navigation v-if="authStore.isAuthenticated()">
+    <v-bottom-navigation v-if="authStore.isAuthenticated">
       <v-btn to="/painel">
         <v-icon>mdi-view-dashboard</v-icon>
         Painel

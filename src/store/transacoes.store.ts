@@ -1,8 +1,9 @@
 import { IUserCanvas } from "@/shared/interfaces/ICanvas";
+import { ITransacoes } from "@/shared/interfaces/ITransacoes";
 import { defineStore } from "pinia";
 
 export const useTransacoesStore = defineStore('useTransacoes', {
-  state: (): { canvas: IUserCanvas } => ({
+  state: (): { canvas: ITransacoes } => ({
     canvas: JSON.parse(localStorage.getItem('canvas') || '{}'),
   }),
   actions: {

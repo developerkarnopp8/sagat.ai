@@ -13,9 +13,10 @@ const api = axios.create({
 
 export const getDataBank = async (): Promise<AxiosResponse<{data: IDataBanco}>> => {
   const useBancoStore = useDtaBancoStore();
+  const authStore = useAuthStore();
+  authStore.setLoading(true);
     try {
         await nextTick();
-        const authStore = useAuthStore();
         
         const res = await api.get('/users/bank_accounts/my', { 
           headers: {
@@ -35,5 +36,7 @@ export const getDataBank = async (): Promise<AxiosResponse<{data: IDataBanco}>> 
     } catch (error) {
         console.error('Erro:', error);
         throw error;
+    } finally {
+        authStore.setLoading(false);
     }
 };

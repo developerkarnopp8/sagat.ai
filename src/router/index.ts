@@ -56,7 +56,7 @@ const router = createRouter({
 
 router.beforeEach((to, _from, next) => {
     const authStore = useAuthStore();
-    const isAuthenticated = authStore.isAuthenticated();
+    const isAuthenticated = authStore.isAuthenticated;
 
     if (to.path !== '/' && !isAuthenticated) {
         next('/');
@@ -64,6 +64,7 @@ router.beforeEach((to, _from, next) => {
         const defaultTitle = 'Sagat Pay';
         document.title = to.meta.title ? `${defaultTitle} | ${to.meta.title}` :  defaultTitle;
         next();
+        authStore.setLoading(false);
     }
 });
 

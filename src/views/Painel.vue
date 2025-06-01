@@ -99,19 +99,18 @@
 
           <v-list lines="two">
             <v-list-item
-              v-for="transaction in recentTransactions"
+              v-for="transaction in transacoesStore?.canvas?.bank_account_transfers"
               :key="transaction.id"
-              :title="transaction.description"
-              :subtitle="transaction.date"
-            >
+              :subtitle="transaction.created_at"
+              >
               <template v-slot:prepend>
-                <v-icon :color="transaction.amount > 0 ? 'success' : 'error'">
-                  {{ transaction.amount > 0 ? 'mdi-bank-transfer-in' : 'mdi-bank-transfer-out' }}
+                <v-icon :color="transaction.amount_to_transfer > 0 ? 'success' : 'error'">
+                  {{ transaction.amount_to_transfer > 0 ? 'mdi-bank-transfer-in' : 'mdi-bank-transfer-out' }}
                 </v-icon>
               </template>
               <template v-slot:append>
-                <span :class="transaction.amount > 0 ? 'text-success' : 'text-error'">
-                  {{ transaction.amount > 0 ? '+' : '-' }}R${{ Math.abs(transaction.amount).toFixed(2) }}
+                <span>
+                  R${{ Math.abs(transaction.amount_to_transfer).toFixed(2) }}
                 </span>
               </template>
             </v-list-item>
@@ -123,36 +122,9 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref } from 'vue';
-import { useAuthStore } from '@/store/auth.store';
 import { useUserStore } from '@/store/user.store';
+import { useTransacoesStore } from '@/store/transacoes.store';
 
-const authStore = useAuthStore();
 const userStore = useUserStore();
-
-onMounted(() => userStore)
-
-const recentTransactions = ref([
-  {
-    id: 1,
-    description: 'Received from Jane Smith',
-    amount: 250.00,
-    date: '2024-03-15',
-    type: 'credit'
-  },
-  {
-    id: 2,
-    description: 'Payment to John Doe',
-    amount: -100.00,
-    date: '2024-03-14',
-    type: 'debit'
-  },
-  {
-    id: 3,
-    description: 'Salary Deposit',
-    amount: 3000.00,
-    date: '2024-03-13',
-    type: 'credit'
-  }
-]);
+const transacoesStore = useTransacoesStore();
 </script>

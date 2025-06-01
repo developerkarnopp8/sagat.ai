@@ -17,6 +17,7 @@ const api = axios.create({
 
 export const signUp = async (user: UserSignUpPayload): Promise<AxiosResponse<{token: AuthTokenResponse}>> => {
   const authStore = useAuthStore();
+  authStore.setLoading(true);
     try {
 
         await nextTick();
@@ -29,7 +30,17 @@ export const signUp = async (user: UserSignUpPayload): Promise<AxiosResponse<{to
             authStore.setToken(tokenAuth.token);
             await getDataUser();
             await getDataBank();
-            await getDataTransferencias();
+            await getDataTransferencias({
+                start_date      : '',
+                end_date        : '',
+                min_value       : 0,
+                max_value       : 0,
+                transfer_type   : '',
+                per_page        : '',
+                page            : ''
+            });
+
+            await new Promise(resolve => setTimeout(resolve, 1000));
             await nextTick();
             router.push('/painel');
         }
@@ -40,10 +51,14 @@ export const signUp = async (user: UserSignUpPayload): Promise<AxiosResponse<{to
         console.error('Erro:', error);
         throw error;
     }
+    finally {
+        authStore.setLoading(false);
+    }
 };
 
 export const signIn = async (user: UserSignInPayload): Promise<AxiosResponse<{ token: AuthTokenResponse }>> => {
     const authStore = useAuthStore();
+    authStore.setLoading(true);
     try {
 
         await nextTick();
@@ -56,7 +71,15 @@ export const signIn = async (user: UserSignInPayload): Promise<AxiosResponse<{ t
             authStore.setToken(tokenAuth.token);
             await getDataUser();
             await getDataBank();
-            await getDataTransferencias();
+            await getDataTransferencias({
+                start_date      : '',
+                end_date        : '',
+                min_value       : 0,
+                max_value       : 0,
+                transfer_type   : '',
+                per_page        : '',
+                page            : ''
+            });
             await nextTick();
             router.push('/painel');
         }
@@ -66,5 +89,7 @@ export const signIn = async (user: UserSignInPayload): Promise<AxiosResponse<{ t
     } catch (error) {
         console.error('Erro:', error);
         throw error;
+    } finally {
+       authStore.setLoading(false);
     }
 };

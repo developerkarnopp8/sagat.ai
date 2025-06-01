@@ -13,10 +13,10 @@ const api = axios.create({
 
 export const getDataUser = async (): Promise<AxiosResponse<{user: IUser}>> => {
   const userStore = useUserStore();
+  const authStore = useAuthStore();
+  authStore.setLoading(true);
     try {
-        await nextTick();
-        const authStore = useAuthStore();
-        
+        await nextTick();        
         const res = await api.get('/users/infos', { 
           headers: {
               'Content-Type': 'application/json',
@@ -33,5 +33,7 @@ export const getDataUser = async (): Promise<AxiosResponse<{user: IUser}>> => {
     } catch (error) {
         console.error('Erro:', error);
         throw error;
+    } finally {
+        authStore.setLoading(false);
     }
 };
