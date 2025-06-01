@@ -1,8 +1,7 @@
 import axios, { AxiosResponse } from 'axios';
 import { nextTick } from 'vue';
 
-import { useTransacoesStore } from '@/store/transacoes.store';
-import { ITransacoes, ITransacoesFilters } from '@/shared/interfaces/ITransacoes';
+import { IDeclaracoes, IDeclaracoesFilters } from '../shared/interfaces/IDeclaracoes';
 import { useAuthStore } from '@/store/auth.store';
 
 const URL = import.meta.env.VITE_BASE_URL_DEV;
@@ -11,9 +10,8 @@ const api = axios.create({
   baseURL: URL,
 });
 
-export const getDataTransferencias = async (prams: ITransacoesFilters): Promise<AxiosResponse<{data: ITransacoes}>> => {
+export const getDataDeclaracoes = async (prams: IDeclaracoesFilters): Promise<AxiosResponse<{data: IDeclaracoes}>> => {
 
-  const useTransacoes = useTransacoesStore();
   const authStore = useAuthStore();
   authStore.setLoading(true);
 
@@ -28,8 +26,6 @@ export const getDataTransferencias = async (prams: ITransacoesFilters): Promise<
               'Cache-Control': 'no-cache',
           }
         });
-
-        useTransacoes.setTransacoesCanvas(res?.data)
          
         return res.data;
 

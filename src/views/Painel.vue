@@ -89,7 +89,7 @@
             <v-btn
               variant="text"
               color="primary"
-              to="/statements"
+              to="/declaracoes"
               prepend-icon="mdi-chevron-right"
             >
               Ver tudo
@@ -121,9 +121,9 @@
 </template>
 
 <script setup lang="ts">
-import { useTransacoesStore } from '@/store/transacoes.store';
+import { useDeclaracoesStore } from '@/store/declaracoes.store';
 import { useDtaBancoStore } from '@/store/conta.bancaria.store';
 
-const transacoesStore = useTransacoesStore();
+const transacoesStore = useDeclaracoesStore();
 const useBancoStore = useDtaBancoStore();
 </script>

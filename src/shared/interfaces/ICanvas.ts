@@ -1,5 +1,5 @@
 import { IDataBanco } from "./IDataBanco";
-import { ITransacoes } from "./ITransacoes";
+import { IDeclaracoes } from "./IDeclaracoes";
 
 export interface IUserCanvas {
     uid?: string,
@@ -8,5 +8,5 @@ export interface IUserCanvas {
     created_at?: string,
     updated_at?: string,
     user_bank_accounts?: [IDataBanco]
-    bank_account_transfers?: [ITransacoes]
+    bank_account_transfers?: [IDeclaracoes]
 }

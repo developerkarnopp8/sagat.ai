@@ -4,10 +4,11 @@ import router from '@/router';
 
 import { UserSignUpPayload, UserSignInPayload, AuthTokenResponse } from '@/shared/interfaces/IAuth';
 
+import { useDeclaracoesStore } from '@/store/declaracoes.store';
 import { useAuthStore } from '@/store/auth.store';
 import { getDataUser } from '@/services/userDataService';
 import { getDataBank } from '@/services/contaBancariaService';
-import { getDataTransferencias } from '@/services/transferenciasService';
+import { getDataDeclaracoes } from '@/services/transferenciasService';
 
 const URL = import.meta.env.VITE_BASE_URL_DEV;
 
@@ -16,7 +17,8 @@ const api = axios.create({
 });
 
 export const signUp = async (user: UserSignUpPayload): Promise<AxiosResponse<{token: AuthTokenResponse}>> => {
-  const authStore = useAuthStore();
+  const authStore = useAuthStore();  
+  const useDeclaracoes = useDeclaracoesStore();
   authStore.setLoading(true);
     try {
 
@@ -30,7 +32,7 @@ export const signUp = async (user: UserSignUpPayload): Promise<AxiosResponse<{to
             authStore.setToken(tokenAuth.token);
             await getDataUser();
             await getDataBank();
-            await getDataTransferencias({
+            const resp = await getDataDeclaracoes({
                 start_date      : '',
                 end_date        : '',
                 min_value       : 0,
@@ -39,6 +41,7 @@ export const signUp = async (user: UserSignUpPayload): Promise<AxiosResponse<{to
                 per_page        : '',
                 page            : ''
             });
+            useDeclaracoes.setDeclaracoesCanvas(resp?.data)
 
             await new Promise(resolve => setTimeout(resolve, 1000));
             await nextTick();
@@ -71,7 +74,7 @@ export const signIn = async (user: UserSignInPayload): Promise<AxiosResponse<{ t
             authStore.setToken(tokenAuth.token);
             await getDataUser();
             await getDataBank();
-            await getDataTransferencias({
+            await getDataDeclaracoes({
                 start_date      : '',
                 end_date        : '',
                 min_value       : 0,

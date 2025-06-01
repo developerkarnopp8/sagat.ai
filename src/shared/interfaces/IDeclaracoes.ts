@@ -1,12 +1,12 @@
-export interface ITransacoes {
-    bank_account_transfers : [ITransacoesTranferencia]
+export interface IDeclaracoes {
+    bank_account_transfers : [IDeclaracoesTranferencia]
     current_page    : number,
     per_page        : number,
     total_pages     : number,
     total_records   : number
 }
 
-export interface ITransacoesTranferencia {
+export interface IDeclaracoesTranferencia {
     id                  : number,
     was_success         : boolean,
     transfer_type_text  : string,
@@ -35,7 +35,7 @@ export interface ITransacoesTranferencia {
         holder_name     : string
     }
 }
-export interface ITransacoesFilters{
+export interface IDeclaracoesFilters{
     start_date	    : string,
     end_date	    : string,
     min_value	    : number,

@@ -35,35 +35,41 @@
         </v-row>
       </v-card-text>
     </v-card>
-
-    <!-- Transactions Table -->
     <v-card>
       <v-data-table
         :headers="headers"
-        :items="transactions"
+        :items="getTransacoesDeclaracoes"
         :loading="loading"
       >
-        <template v-slot:item.amount="{ item }">
-          <span :class="item.amount >= 0 ? 'text-success' : 'text-error'">
-            ${{ Math.abs(item.amount).toFixed(2) }}
+        <template v-slot:[`item.amount_to_transfer`]="{ item }">
+          <span :class="item.amount_to_transfer >= 0 ? 'text-success' : 'text-error'">
+            R${{ Math.abs(item.amount_to_transfer).toFixed(2) }}
           </span>
         </template>
-        <template v-slot:item.status="{ item }">
+
+        <template v-slot:[`item.was_success`]="{ item }">
           <v-chip
-            :color="getStatusColor(item.status)"
+            :color="item.was_success ? 'success' : 'error'"
             size="small"
           >
-            {{ item.status }}
+            {{ item.was_success ? 'Concluído' : 'Falhou' }}
           </v-chip>
         </template>
       </v-data-table>
     </v-card>
+
   </v-container>
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
+import { onMounted, ref } from 'vue';
+import { getDataDeclaracoes } from '@/services/transferenciasService';
+import { useDeclaracoesStore } from '@/store/declaracoes.store';
 
+
+const useDeclaraStore = useDeclaracoesStore()
+
+const getTransacoesDeclaracoes = useDeclaraStore.getTransacoesDeclaracoes;
 const filters = ref({
   dateFrom: '',
   dateTo: '',
@@ -71,35 +77,15 @@ const filters = ref({
 });
 
 const headers = [
-  { title: 'Date', key: 'date' },
-  { title: 'Type', key: 'type' },
-  { title: 'Amount', key: 'amount' },
-  { title: 'Status', key: 'status' }
+  { title: 'Data', key: 'created_at' },
+  { title: 'Tipo', key: 'transfer_type_text' },
+  { title: 'Valor da Transferência', key: 'amount_to_transfer' },
+  { title: 'Status', key: 'was_success' }
 ];
 
 const loading = ref(false);
-const transactions = ref([
-  {
-    date: '2024-03-15',
-    type: 'PIX',
-    amount: 500.00,
-    status: 'completed'
-  },
-  {
-    date: '2024-03-14',
-    type: 'TED',
-    amount: -1000.00,
-    status: 'completed'
-  },
-  {
-    date: '2024-03-13',
-    type: 'PIX',
-    amount: 250.00,
-    status: 'pending'
-  }
-]);
 
-const getStatusColor = (status) => {
+const getStatusColor = (status: any) => {
   switch (status) {
     case 'completed': return 'success';
     case 'pending': return 'warning';
@@ -114,4 +100,17 @@ const applyFilters = () => {
     loading.value = false;
   }, 1000);
 };
+
+onMounted( async () => {
+  const response = await getDataDeclaracoes({
+    start_date      : '',
+    end_date        : '',
+    min_value       : 0,
+    max_value       : 0,
+    transfer_type   : '',
+    per_page        : '',
+    page            : ''
+  });
+  useDeclaraStore.setallTransacoesDeclaracoes(response || [])
+})
 </script>
