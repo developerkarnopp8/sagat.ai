@@ -1,6 +1,5 @@
 <template>
   <v-app>
-    <!-- App bar -->
     <v-app-bar color="primary" app>
       <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
       <v-app-bar-title>Sagat Pay</v-app-bar-title>
@@ -10,7 +9,6 @@
       </v-btn>
     </v-app-bar>
 
-    <!-- Navigation drawer -->
     <v-navigation-drawer v-model="drawer" app>
       <v-list>
         <v-list-item
@@ -24,34 +22,32 @@
 
       <v-list>
         <v-list-item to="/painel" prepend-icon="mdi-view-dashboard" title="Painel"></v-list-item>
-        <v-list-item to="/accounts" prepend-icon="mdi-bank" title="My Accounts"></v-list-item>
-        <v-list-item to="/transfer" prepend-icon="mdi-bank-transfer" title="Transfer Money"></v-list-item>
-        <v-list-item to="/statements" prepend-icon="mdi-text-box-multiple" title="Statements"></v-list-item>
+        <v-list-item to="/conta" prepend-icon="mdi-bank" title="Minhas Contas"></v-list-item>
+        <v-list-item to="/transferencia" prepend-icon="mdi-bank-transfer" title="Transferências"></v-list-item>
+        <v-list-item to="/declaracoes" prepend-icon="mdi-text-box-multiple" title="Declarações"></v-list-item>
       </v-list>
     </v-navigation-drawer>
 
-    <!-- Main content -->
     <v-main>
       <router-view />
     </v-main>
 
-    <!-- Bottom navigation for mobile -->
     <v-bottom-navigation>
       <v-btn to="/painel">
         <v-icon>mdi-view-dashboard</v-icon>
         Painel
       </v-btn>
-      <v-btn to="/accounts">
+      <v-btn to="/conta">
         <v-icon>mdi-bank</v-icon>
-        Accounts
+        Contas
       </v-btn>
-      <v-btn to="/transfer">
+      <v-btn to="/transferencia">
         <v-icon>mdi-bank-transfer</v-icon>
-        Transfer
+        Transferências
       </v-btn>
-      <v-btn to="/statements">
+      <v-btn to="/declaracoes">
         <v-icon>mdi-text-box-multiple</v-icon>
-        Statements
+        Declarações
       </v-btn>
     </v-bottom-navigation>
   </v-app>

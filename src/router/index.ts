@@ -23,6 +23,24 @@ const routes: RouteRecordRaw[] = [
     component: () => import('../views/Perfil.vue'),
      meta: { requiresAuth: true },
   },
+  { 
+    path: '/conta', 
+    name: 'Contas', 
+    component: () => import('../views/Contas.vue'),
+     meta: { requiresAuth: true },
+  },
+  { 
+    path: '/transferencia', 
+    name: 'Transferências', 
+    component: () => import('../views/Transferencias.vue'),
+     meta: { requiresAuth: true },
+  },
+  { 
+    path: '/declaracoes', 
+    name: 'Declarações', 
+    component: () => import('../views/Declaracoes.vue'),
+     meta: { requiresAuth: true },
+  },
 ]
 
 const router = createRouter({
