@@ -15,31 +15,36 @@ const routes: RouteRecordRaw[] = [
     path: '/painel', 
     name: 'Painel', 
     component: () => import('../views/Painel.vue'),
-     meta: { requiresAuth: true },
+    meta: { requiresAuth: true },
   },
   { 
     path: '/perfil', 
     name: 'Perfil', 
     component: () => import('../views/Perfil.vue'),
-     meta: { requiresAuth: true },
+    meta: { requiresAuth: true },
   },
   { 
     path: '/conta', 
     name: 'Contas', 
     component: () => import('../views/Contas.vue'),
-     meta: { requiresAuth: true },
+    meta: { requiresAuth: true },
   },
   { 
     path: '/transferencia', 
     name: 'Transferências', 
     component: () => import('../views/Transferencias.vue'),
-     meta: { requiresAuth: true },
+    meta: { requiresAuth: true },
   },
   { 
     path: '/declaracoes', 
     name: 'Declarações', 
     component: () => import('../views/Declaracoes.vue'),
-     meta: { requiresAuth: true },
+    meta: { requiresAuth: true },
+  },
+  { 
+    path: '/:pathMatch(.*)*',
+    name: 'Página não encontrada', 
+    component: () => import('../views/PaginaNaoExiste.vue'),
   },
 ]
 
