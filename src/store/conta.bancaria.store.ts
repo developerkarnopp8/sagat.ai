@@ -5,6 +5,9 @@ export const useDtaBancoStore = defineStore('useDataBanco', {
   state: (): { canvas: IUserCanvas } => ({
     canvas: JSON.parse(localStorage.getItem('canvas') || '{}'),
   }),
+  getters: {
+      userBanks: (state) => state.canvas.user_bank_accounts,
+  },
   actions: {
     setDataBancoCanvas(newData: any) {
       this.canvas = {

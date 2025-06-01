@@ -5,6 +5,9 @@ export const useUserStore = defineStore('useUser', {
   state: (): { canvas: IUserCanvas } => ({
     canvas: JSON.parse(localStorage.getItem('canvas') || '{}'),
   }),
+  getters: {
+      // isAuthenticated: (state) => !!state.token,
+  },
   actions: {
     setDataUserCanvas(newData: any) {
 

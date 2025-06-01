@@ -1,8 +1,7 @@
 <template>
   <v-container>
     <v-row>
-      <!-- Bank Accounts -->
-      <v-col v-for="account in userStore?.canvas?.user_bank_accounts" :key="account.id" cols="12" md="6">
+      <v-col v-for="account in useBancoStore?.userBanks" :key="account.id" cols="12" md="6">
         <v-card>
           <v-card-item>
             <template v-slot:prepend>
@@ -122,9 +121,9 @@
 </template>
 
 <script setup lang="ts">
-import { useUserStore } from '@/store/user.store';
 import { useTransacoesStore } from '@/store/transacoes.store';
+import { useDtaBancoStore } from '@/store/conta.bancaria.store';
 
-const userStore = useUserStore();
 const transacoesStore = useTransacoesStore();
+const useBancoStore = useDtaBancoStore();
 </script>
