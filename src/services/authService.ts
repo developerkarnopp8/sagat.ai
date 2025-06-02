@@ -4,7 +4,6 @@ import router from '@/router';
 
 import { UserSignUpPayload, UserSignInPayload, AuthTokenResponse } from '@/shared/interfaces/IAuth';
 
-import { useDeclaracoesStore } from '@/store/declaracoes.store';
 import { useAuthStore } from '@/store/auth.store';
 import { getDataUser } from '@/services/userDataService';
 import { getDataBank } from '@/services/contaBancariaService';
@@ -18,7 +17,6 @@ const api = axios.create({
 
 export const signUp = async (user: UserSignUpPayload): Promise<AxiosResponse<{token: AuthTokenResponse}>> => {
   const authStore = useAuthStore();  
-  const useDeclaracoes = useDeclaracoesStore();
   authStore.setLoading(true);
     try {
 
@@ -32,18 +30,6 @@ export const signUp = async (user: UserSignUpPayload): Promise<AxiosResponse<{to
             authStore.setToken(tokenAuth.token);
             await getDataUser();
             await getDataBank();
-            const resp = await getDataDeclaracoes({
-                start_date      : '',
-                end_date        : '',
-                min_value       : 0,
-                max_value       : 0,
-                transfer_type   : '',
-                per_page        : '',
-                page            : ''
-            });
-            useDeclaracoes.setDeclaracoesCanvas(resp?.data)
-
-            await new Promise(resolve => setTimeout(resolve, 1000));
             await nextTick();
             router.push('/painel');
         }

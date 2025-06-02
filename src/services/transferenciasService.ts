@@ -10,7 +10,7 @@ const api = axios.create({
   baseURL: URL,
 });
 
-export const getDataDeclaracoes = async (prams: IDeclaracoesFilters): Promise<AxiosResponse<{data: IDeclaracoes}>> => {
+export const getDataDeclaracoes = async (prams: IDeclaracoesFilters) => {
 
   const authStore = useAuthStore();
   authStore.setLoading(true);
@@ -18,7 +18,7 @@ export const getDataDeclaracoes = async (prams: IDeclaracoesFilters): Promise<Ax
     try {
         await nextTick();
         
-        const res = await api.get(`/users/bank_account_transfers/statements?start_date=${prams.start_date}&end_date=${prams.end_date}&min_value=${prams.min_value}&transfer_type=${prams.transfer_type}&page=${prams.page}&per_page=${prams.per_page}`, { 
+        const res = await api.get<IDeclaracoes>(`/users/bank_account_transfers/statements?start_date=${prams.start_date}&end_date=${prams.end_date}&min_value=${prams.min_value}&transfer_type=${prams.transfer_type}&page=${prams.page}&per_page=${prams.per_page}`, { 
           headers: {
               'Content-Type': 'application/json',
               'Accept': 'application/json',
@@ -27,7 +27,7 @@ export const getDataDeclaracoes = async (prams: IDeclaracoesFilters): Promise<Ax
           }
         });
          
-        return res.data;
+        return res;
 
     } catch (error) {
         console.error('Erro:', error);

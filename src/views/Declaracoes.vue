@@ -35,6 +35,7 @@
         </v-row>
       </v-card-text>
     </v-card>
+    <!-- {{ getTransacoesDeclaracoes }} -->
     <v-card>
       <v-data-table
         :headers="headers"
@@ -62,18 +63,19 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref } from 'vue';
+import { onMounted, ref, computed } from 'vue';
 import { getDataDeclaracoes } from '@/services/transferenciasService';
 import { useDeclaracoesStore } from '@/store/declaracoes.store';
-
+import { IDeclaracoes } from '@/shared/interfaces/IDeclaracoes';
 
 const useDeclaraStore = useDeclaracoesStore()
 
-const getTransacoesDeclaracoes = useDeclaraStore.getTransacoesDeclaracoes;
+const getTransacoesDeclaracoes = computed(() => useDeclaraStore.getTransacoesDeclaracoes);
+
 const filters = ref({
   dateFrom: '',
   dateTo: '',
-  type: null
+  type: ''
 });
 
 const headers = [
@@ -85,32 +87,49 @@ const headers = [
 
 const loading = ref(false);
 
-const getStatusColor = (status: any) => {
-  switch (status) {
-    case 'completed': return 'success';
-    case 'pending': return 'warning';
-    case 'failed': return 'error';
-    default: return 'grey';
-  }
-};
-
-const applyFilters = () => {
+const applyFilters = async () => {
   loading.value = true;
+  console.log(filters);
+  
+  const response = await getDataDeclaracoes({
+    start_date      : '',
+    end_date        : '',
+    min_value       : 0,
+    max_value       : 0,
+    transfer_type   : filters.value.type,
+    per_page        : '',
+    page            : ''
+  });
+  const declaracoes: any = response;
+  console.log(declaracoes,'declaracoes');
+
+  useDeclaraStore.setallTransacoesDeclaracoes(declaracoes, true);
   setTimeout(() => {
     loading.value = false;
   }, 1000);
 };
 
 onMounted( async () => {
-  const response = await getDataDeclaracoes({
-    start_date      : '',
-    end_date        : '',
-    min_value       : 0,
-    max_value       : 0,
-    transfer_type   : '',
-    per_page        : '',
-    page            : ''
-  });
-  useDeclaraStore.setallTransacoesDeclaracoes(response || [])
+  loading.value = true;
+  try {
+    const response = await getDataDeclaracoes({
+      start_date: '',
+      end_date: '',
+      min_value: 0,
+      max_value: 0,
+      transfer_type: '',
+      per_page: '',
+      page: ''
+    });
+
+    const declaracoes: IDeclaracoes = response.data; 
+    useDeclaraStore.setallTransacoesDeclaracoes(declaracoes, false);
+    console.log(declaracoes);
+    
+  } catch (err) {
+    console.error('Erro ao carregar transações:', err);
+  } finally {
+    loading.value = false;
+  }
 })
 </script>

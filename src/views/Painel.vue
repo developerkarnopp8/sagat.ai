@@ -123,7 +123,47 @@
 <script setup lang="ts">
 import { useDeclaracoesStore } from '@/store/declaracoes.store';
 import { useDtaBancoStore } from '@/store/conta.bancaria.store';
+import { onMounted, ref } from 'vue';
+import { getDataDeclaracoes } from '@/services/transferenciasService';
+import { IDeclaracoes } from '@/shared/interfaces/IDeclaracoes';
 
 const transacoesStore = useDeclaracoesStore();
 const useBancoStore = useDtaBancoStore();
+
+const loading = ref(false);
+
+onMounted( async () => {
+  loading.value = true;
+  try {
+    const response = await getDataDeclaracoes({
+        start_date      : '',
+        end_date        : '',
+        min_value       : 0,
+        max_value       : 0,
+        transfer_type   : '',
+        per_page        : '',
+        page            : ''
+    });
+    const declaracoes: IDeclaracoes = response.data; 
+    transacoesStore.setDeclaracoesCanvas(declaracoes)
+    // const response = await getDataDeclaracoes({
+    //   start_date: '',
+    //   end_date: '',
+    //   min_value: 0,
+    //   max_value: 0,
+    //   transfer_type: '',
+    //   per_page: '',
+    //   page: ''
+    // });
+
+    // const declaracoes: IDeclaracoes = response.data; 
+    // useDeclaraStore.setallTransacoesDeclaracoes(declaracoes, false);
+    // console.log(declaracoes);
+    
+  } catch (err) {
+    console.error('Erro ao carregar transações:', err);
+  } finally {
+    loading.value = false;
+  }
+})
 </script>
