@@ -98,9 +98,9 @@
 
           <v-list lines="two">
             <v-list-item
-              v-for="transaction in transacoesStore?.canvas?.bank_account_transfers"
+                v-for="transaction in transacoesStore?.canvas?.bank_account_transfers?.slice(-3).reverse()"
               :key="transaction.id"
-              :subtitle="transaction.created_at"
+              :subtitle="filterDate(transaction.created_at)"
               >
               <template v-slot:prepend>
                 <v-icon :color="transaction.amount_to_transfer > 0 ? 'success' : 'error'">
@@ -121,11 +121,14 @@
 </template>
 
 <script setup lang="ts">
-import { useDeclaracoesStore } from '@/store/declaracoes.store';
-import { useDtaBancoStore } from '@/store/conta.bancaria.store';
 import { onMounted, ref } from 'vue';
-import { getDataDeclaracoes } from '@/services/transferenciasService';
 import { IDeclaracoes } from '@/shared/interfaces/IDeclaracoes';
+
+import { getDataDeclaracoes } from '@/services/transferenciasService';
+import { filterDate } from '@/plugins/filters';
+
+import { useDtaBancoStore } from '@/store/conta.bancaria.store';
+import { useDeclaracoesStore } from '@/store/declaracoes.store';
 
 const transacoesStore = useDeclaracoesStore();
 const useBancoStore = useDtaBancoStore();
@@ -146,20 +149,6 @@ onMounted( async () => {
     });
     const declaracoes: IDeclaracoes = response.data; 
     transacoesStore.setDeclaracoesCanvas(declaracoes)
-    // const response = await getDataDeclaracoes({
-    //   start_date: '',
-    //   end_date: '',
-    //   min_value: 0,
-    //   max_value: 0,
-    //   transfer_type: '',
-    //   per_page: '',
-    //   page: ''
-    // });
-
-    // const declaracoes: IDeclaracoes = response.data; 
-    // useDeclaraStore.setallTransacoesDeclaracoes(declaracoes, false);
-    // console.log(declaracoes);
-    
   } catch (err) {
     console.error('Erro ao carregar transações:', err);
   } finally {

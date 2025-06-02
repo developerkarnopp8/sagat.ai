@@ -1,8 +1,6 @@
 <template>
   <v-container>
-    <h1 class="text-h4 mb-6">Transaction Statements</h1>
-
-    <!-- Filters -->
+    <h1 class="text-h4 mb-6">Declarações de transação</h1>
     <v-card class="mb-6">
       <v-card-text>
         <v-row>
@@ -29,13 +27,12 @@
           </v-col>
           <v-col cols="12" sm="6" md="3">
             <v-btn color="primary" block @click="applyFilters">
-              Apply Filters
+              Filtrar
             </v-btn>
           </v-col>
         </v-row>
       </v-card-text>
     </v-card>
-    <!-- {{ getTransacoesDeclaracoes }} -->
     <v-card>
       <v-data-table
         :headers="headers"

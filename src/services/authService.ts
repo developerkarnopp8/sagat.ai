@@ -10,7 +10,6 @@ import { getDataBank } from '@/services/contaBancariaService';
 import { getDataDeclaracoes } from '@/services/transferenciasService';
 
 const URL = import.meta.env.VITE_BASE_URL_DEV;
-
 const api = axios.create({
   baseURL: URL,
 });
@@ -19,13 +18,9 @@ export const signUp = async (user: UserSignUpPayload): Promise<AxiosResponse<{to
   const authStore = useAuthStore();  
   authStore.setLoading(true);
     try {
-
         await nextTick();
-        
         const res = await api.post('/auth/sign_up', { user });
-
         const tokenAuth = res.data;
-        
         if (tokenAuth.token) {
             authStore.setToken(tokenAuth.token);
             await getDataUser();
@@ -33,9 +28,7 @@ export const signUp = async (user: UserSignUpPayload): Promise<AxiosResponse<{to
             await nextTick();
             router.push('/painel');
         }
-        
         return res;
-
     } catch (error) {
         console.error('Erro:', error);
         throw error;
@@ -49,13 +42,9 @@ export const signIn = async (user: UserSignInPayload): Promise<AxiosResponse<{ t
     const authStore = useAuthStore();
     authStore.setLoading(true);
     try {
-
         await nextTick();
-
         const res = await api.put('/auth/sign_in', { user })
-
         const tokenAuth = res.data;
-        
         if (tokenAuth.token) {
             authStore.setToken(tokenAuth.token);
             await getDataUser();
@@ -72,9 +61,7 @@ export const signIn = async (user: UserSignInPayload): Promise<AxiosResponse<{ t
             await nextTick();
             router.push('/painel');
         }
-        
         return res;
-
     } catch (error) {
         console.error('Erro:', error);
         throw error;
