@@ -4,7 +4,6 @@ import { useUserStore } from '@/store/user.store';
 import { useNotificationsStore } from '@/store/notifications.store';
 import { useForm } from 'vee-validate';
 import * as yup from 'yup';
-// import api from '../../services/api';
 
 const userStore = useUserStore();
 const notificationsStore = useNotificationsStore();
@@ -128,7 +127,7 @@ const onSubmit = handleSubmit(async (values: { name: any; email: any; currentPas
   <div class="profile-container">
     <v-row>
       <v-col cols="12">
-        <h1 class="text-h4 font-weight-bold mb-4">My Profile</h1>
+        <h1 class="text-h4 font-weight-bold mb-4">Meu Perfil</h1>
       </v-col>
     </v-row>
 
@@ -148,8 +147,6 @@ const onSubmit = handleSubmit(async (values: { name: any; email: any; currentPas
           </v-card-item>
 
           <v-divider></v-divider>
-          
-          <!-- Display mode -->
           <v-card-text v-if="!editMode">
             <v-list>
               <v-list-item>
@@ -200,7 +197,6 @@ const onSubmit = handleSubmit(async (values: { name: any; email: any; currentPas
               
               <v-divider class="my-4"></v-divider>
               
-              <!-- Password change toggle -->
               <div class="d-flex align-center mb-4">
                 <v-checkbox
                   v-model="isChangingPassword"
@@ -209,7 +205,6 @@ const onSubmit = handleSubmit(async (values: { name: any; email: any; currentPas
                 ></v-checkbox>
               </div>
               
-              <!-- Password change fields -->
               <div v-if="isChangingPassword">
                 <v-text-field
                   v-model="values.currentPassword"
@@ -257,7 +252,7 @@ const onSubmit = handleSubmit(async (values: { name: any; email: any; currentPas
                 prepend-icon="mdi-pencil"
                 @click="toggleEditMode"
               >
-                Edit Profile
+                Editar Perfil
               </v-btn>
             </template>
             
@@ -275,7 +270,7 @@ const onSubmit = handleSubmit(async (values: { name: any; email: any; currentPas
                 @click="onSubmit"
                 :loading="loading"
               >
-                Save Changes
+                Salvar Alterações
               </v-btn>
             </template>
           </v-card-actions>
