@@ -5,7 +5,7 @@
       indeterminate
       color="primary"
     />
-    <v-app-bar color="primary" app v-if="authStore.isAuthenticated">
+    <v-app-bar color="primary" app v-if="authStore.isAuthenticated && route.path != '/' && route.path != '/cadastro' ">
       <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
       <v-app-bar-title>Sagat Pay</v-app-bar-title>
       <v-spacer></v-spacer>
@@ -60,18 +60,18 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref } from 'vue';
+import { onMounted, ref, watch } from 'vue';
 const drawer = ref(false);
 import gustavoAvatar from '@/assets/gustavo_karnopp.jpeg';
 
 import { useUserStore } from '@/store/user.store';
 import { useAuthStore } from '@/store/auth.store';
-import { useRouter } from 'vue-router';
+import { useRoute } from 'vue-router';
 
 const authStore = useAuthStore();
 const userStore = useUserStore();
 
-const router = useRouter();
+const route = useRoute();
 
 const logout = (): void => {
     authStore.clearToken();

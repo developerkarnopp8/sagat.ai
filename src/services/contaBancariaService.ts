@@ -27,11 +27,34 @@ export const getDataBank = async (): Promise<AxiosResponse<{data: IDataBanco}>> 
           }
         });
         
-        console.log('chamou 1');
-        
         useBancoStore.setDataBancoCanvas(res?.data)
          
-        return res.data;
+        return res;
+
+    } catch (error) {
+        console.error('Erro:', error);
+        throw error;
+    } finally {
+        authStore.setLoading(false);
+    }
+};
+
+export const getDataBankAll = async (): Promise<AxiosResponse<{data: IDataBanco}>> => {
+  const authStore = useAuthStore();
+  authStore.setLoading(true);
+    try {
+        await nextTick();
+        
+        const res = await api.get('/users/bank_accounts', { 
+          headers: {
+              'Content-Type': 'application/json',
+              'Accept': 'application/json',
+              'Authorization': `Bearer ${authStore.token}`,
+              'Cache-Control': 'no-cache',
+          }
+        });
+                 
+        return res;
 
     } catch (error) {
         console.error('Erro:', error);

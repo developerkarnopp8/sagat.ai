@@ -58,7 +58,7 @@ router.beforeEach((to, _from, next) => {
     const authStore = useAuthStore();
     const isAuthenticated = authStore.isAuthenticated;
 
-    if (to.path !== '/' && !isAuthenticated) {
+    if ((to.path !== '/' && to.path !== '/cadastro') && !isAuthenticated) {
         next('/');
     } else {
         const defaultTitle = 'Sagat Pay';

@@ -13,3 +13,16 @@ export interface IDataBanco {
     updated_at: string,
     amount: number
 }
+
+export interface IDataBancoAll {
+    account_digit: string
+    account_number: string
+    account_type: string
+    agency_digit: string
+    agency_number: string
+    bank_code: string
+    bank_name: string
+    document: string
+    holder_name: string
+    id: number
+}
