@@ -18,7 +18,7 @@ export const getDataDeclaracoes = async (prams: IDeclaracoesFilters) => {
     try {
         await nextTick();
         
-        const res = await api.get<IDeclaracoes>(`/users/bank_account_transfers/statements?start_date=${prams.start_date}&end_date=${prams.end_date}&min_value=${prams.min_value}&transfer_type=${prams.transfer_type}&page=${prams.page}&per_page=${prams.per_page}`, { 
+        const res = await api.get<IDeclaracoes>(`/users/bank_account_transfers/statements?start_date=${prams.start_date}&end_date=${prams.end_date}&min_value=${prams.min_value}&max_value=${prams.max_value}&transfer_type=${prams.transfer_type}&page=${prams.page}&per_page=${prams.per_page}`, { 
           headers: {
               'Content-Type': 'application/json',
               'Accept': 'application/json',

@@ -141,8 +141,8 @@ onMounted( async () => {
     const response = await getDataDeclaracoes({
         start_date      : '',
         end_date        : '',
-        min_value       : 0,
-        max_value       : 0,
+        min_value       : '',
+        max_value       : '',
         transfer_type   : '',
         per_page        : '',
         page            : ''

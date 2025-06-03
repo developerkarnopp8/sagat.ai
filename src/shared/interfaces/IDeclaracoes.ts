@@ -38,8 +38,8 @@ export interface IDeclaracoesTranferencia {
 export interface IDeclaracoesFilters{
     start_date	    : string,
     end_date	    : string,
-    min_value	    : number,
-    max_value	    : number,
+    min_value	    : string,
+    max_value	    : string,
     transfer_type	: string,
     per_page	    : string,
     page	        : string,

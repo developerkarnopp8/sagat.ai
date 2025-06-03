@@ -7,7 +7,6 @@ import { UserSignUpPayload, UserSignInPayload, AuthTokenResponse } from '@/share
 import { useAuthStore } from '@/store/auth.store';
 import { getDataUser } from '@/services/userDataService';
 import { getDataBank } from '@/services/contaBancariaService';
-import { getDataDeclaracoes } from '@/services/transferenciasService';
 
 const URL = import.meta.env.VITE_BASE_URL_DEV;
 const api = axios.create({
@@ -49,15 +48,6 @@ export const signIn = async (user: UserSignInPayload): Promise<AxiosResponse<{ t
             authStore.setToken(tokenAuth.token);
             await getDataUser();
             await getDataBank();
-            await getDataDeclaracoes({
-                start_date      : '',
-                end_date        : '',
-                min_value       : 0,
-                max_value       : 0,
-                transfer_type   : '',
-                per_page        : '',
-                page            : ''
-            });
             await nextTick();
             router.push('/painel');
         }
