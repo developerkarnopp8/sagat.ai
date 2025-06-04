@@ -28,23 +28,29 @@
           <v-divider></v-divider>
 
           <v-card-actions>
-            <v-btn
-              variant="text"
-              color="primary"
-              prepend-icon="mdi-bank-transfer"
-              to="/transferencia"
-            >
-              Transferências
-            </v-btn>
-            <v-spacer></v-spacer>
-            <v-btn
-              variant="text"
-              color="primary"
-              prepend-icon="mdi-text-box-multiple"
-              to="/declaracoes"
-            >
-              Declarações
-            </v-btn>
+            <v-row>
+              <v-col class="d-flex align-center justify-center" cols="12" md="6">
+                <v-btn
+                  variant="text"
+                  color="primary"
+                  prepend-icon="mdi-bank-transfer"
+                  to="/transferencia"
+                >
+                  Transferências
+                </v-btn>
+              </v-col>
+              <v-spacer></v-spacer>
+              <v-col class="d-flex align-center justify-center" cols="12" md="6">
+                <v-btn
+                  variant="text"
+                  color="primary"
+                  prepend-icon="mdi-text-box-multiple"
+                  to="/declaracoes"
+                >
+                  Declarações
+                </v-btn>
+              </v-col>
+            </v-row>
           </v-card-actions>
         </v-card>
       </v-col>
@@ -54,7 +60,7 @@
           <v-card-title>Ações rápidas</v-card-title>
           <v-card-text>
             <v-row>
-              <v-col cols="6" md="3">
+              <v-col cols="12" md="6">
                 <v-btn
                   block
                   color="primary"
@@ -65,7 +71,7 @@
                   Transferências
                 </v-btn>
               </v-col>
-              <v-col cols="6" md="3">
+              <v-col cols="12" md="6">
                 <v-btn
                   block
                   color="primary"

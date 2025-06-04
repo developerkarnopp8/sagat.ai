@@ -37,30 +37,11 @@
     <v-main>
       <router-view />
     </v-main>
-
-    <v-bottom-navigation v-if="authStore.isAuthenticated">
-      <v-btn to="/painel">
-        <v-icon>mdi-view-dashboard</v-icon>
-        Painel
-      </v-btn>
-      <v-btn to="/conta">
-        <v-icon>mdi-bank</v-icon>
-        Contas
-      </v-btn>
-      <v-btn to="/transferencia">
-        <v-icon>mdi-bank-transfer</v-icon>
-        Transferências
-      </v-btn>
-      <v-btn to="/declaracoes">
-        <v-icon>mdi-text-box-multiple</v-icon>
-        Declarações
-      </v-btn>
-    </v-bottom-navigation>
   </v-app>
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref, watch } from 'vue';
+import { ref } from 'vue';
 const drawer = ref(false);
 import gustavoAvatar from '@/assets/gustavo_karnopp.jpeg';
 
