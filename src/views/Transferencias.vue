@@ -62,7 +62,7 @@
           <v-list>
             <v-list-item>
               <v-list-item-title>Valor</v-list-item-title>
-              <v-list-item-subtitle>${{ amount }}</v-list-item-subtitle>
+              <v-list-item-subtitle>R${{ amount }}</v-list-item-subtitle>
             </v-list-item>
             <v-list-item>
               <v-list-item-title>De</v-list-item-title>
@@ -76,7 +76,7 @@
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn color="primary" @click="closeSuccessDialog">Feito</v-btn>
+          <v-btn color="primary" @click="closeSuccessDialog()">Feito</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -84,7 +84,6 @@
 </template>
 
 <script setup lang="ts">
-  
 import { filterError } from '@/plugins/filtersErrors';
 
 import { getDataBank, getDataBankAll } from '@/services/contaBancariaService';
@@ -142,13 +141,12 @@ const onSubmit = async () => {
     }
 };
 
-const closeSuccessDialog = () => {
+const closeSuccessDialog = async () => {
   showSuccessDialog.value = false;
   sourceAccount.value = null;
   destinationAccount.value = null;
   amount.value = '';
   transferType.value = '1';
-  console.log(execTranfer.value, 'envio');
 };
 
 

@@ -27,8 +27,6 @@ export const getDataBank = async (): Promise<AxiosResponse<{data: IDataBanco}>> 
               'Cache-Control': 'no-cache',
           }
         });
-        
-        useBancoStore.setDataBancoCanvas(res?.data)
          
         return res;
 

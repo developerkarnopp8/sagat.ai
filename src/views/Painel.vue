@@ -125,6 +125,8 @@ import { onMounted, ref } from 'vue';
 import { IDeclaracoes } from '@/shared/interfaces/IDeclaracoes';
 
 import { getDataDeclaracoes } from '@/services/transferenciasService';
+import { getDataBank } from '@/services/contaBancariaService';
+
 import { filterDate } from '@/plugins/filters';
 
 import { useDtaBancoStore } from '@/store/conta.bancaria.store';
@@ -138,6 +140,10 @@ const loading = ref(false);
 onMounted( async () => {
   loading.value = true;
   try {
+
+    const respGetDataBank = await getDataBank();
+    useBancoStore.setDataBancoCanvas(respGetDataBank?.data);
+
     const response = await getDataDeclaracoes({
         start_date      : '',
         end_date        : '',
@@ -148,7 +154,8 @@ onMounted( async () => {
         page            : ''
     });
     const declaracoes: IDeclaracoes = response.data; 
-    transacoesStore.setDeclaracoesCanvas(declaracoes)
+    transacoesStore.setDeclaracoesCanvas(declaracoes);    
+
   } catch (err) {
     console.error('Erro ao carregar transações:', err);
   } finally {
