@@ -7,6 +7,7 @@ import { UserSignUpPayload, UserSignInPayload, AuthTokenResponse } from '@/share
 import { useAuthStore } from '@/store/auth.store';
 import { getDataUser } from '@/services/userDataService';
 import { getDataBank } from '@/services/contaBancariaService';
+import { filterError } from '@/plugins/filtersErrors';
 
 const URL = import.meta.env.VITE_BASE_URL_DEV;
 const api = axios.create({
@@ -29,6 +30,7 @@ export const signUp = async (user: UserSignUpPayload): Promise<AxiosResponse<{to
         }
         return res;
     } catch (error) {
+        filterError(error)
         console.error('Erro:', error);
         throw error;
     }
@@ -53,6 +55,7 @@ export const signIn = async (user: UserSignInPayload): Promise<AxiosResponse<{ t
         }
         return res;
     } catch (error) {
+        filterError(error)
         console.error('Erro:', error);
         throw error;
     } finally {

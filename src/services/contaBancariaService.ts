@@ -4,6 +4,7 @@ import { nextTick } from 'vue';
 import { useDtaBancoStore } from '@/store/conta.bancaria.store';
 import { useAuthStore } from '@/store/auth.store';
 import { IDataBanco } from '@/shared/interfaces/IDataBanco';
+import { filterError } from '@/plugins/filtersErrors';
 
 const URL = import.meta.env.VITE_BASE_URL_DEV;
 
@@ -57,8 +58,9 @@ export const getDataBankAll = async (): Promise<AxiosResponse<{data: IDataBanco}
         return res;
 
     } catch (error) {
-        console.error('Erro:', error);
-        throw error;
+      filterError(error)
+      console.error('Erro:', error);
+      throw error;
     } finally {
         authStore.setLoading(false);
     }

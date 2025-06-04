@@ -4,6 +4,7 @@ import { nextTick } from 'vue';
 import { useUserStore } from '@/store/user.store';
 import { useAuthStore } from '@/store/auth.store';
 import { IUser } from '@/shared/interfaces/IDataUser';
+import { filterError } from '@/plugins/filtersErrors';
 
 const URL = import.meta.env.VITE_BASE_URL_DEV;
 
@@ -31,8 +32,9 @@ export const getDataUser = async (): Promise<AxiosResponse<{user: IUser}>> => {
         return res.data;
 
     } catch (error) {
-        console.error('Erro:', error);
-        throw error;
+      filterError(error)
+      console.error('Erro:', error);
+      throw error;
     } finally {
         authStore.setLoading(false);
     }

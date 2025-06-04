@@ -3,6 +3,7 @@ import { nextTick } from 'vue';
 
 import { IDeclaracoes, IDeclaracoesFilters } from '../shared/interfaces/IDeclaracoes';
 import { useAuthStore } from '@/store/auth.store';
+import { filterError } from '@/plugins/filtersErrors';
 
 const URL = import.meta.env.VITE_BASE_URL_DEV;
 
@@ -30,8 +31,9 @@ export const getDataDeclaracoes = async (prams: IDeclaracoesFilters) => {
         return res;
 
     } catch (error) {
-        console.error('Erro:', error);
-        throw error;
+      filterError(error)
+      console.error('Erro:', error);
+      throw error;
     } finally {
         authStore.setLoading(false);
     }
