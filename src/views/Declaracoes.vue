@@ -9,6 +9,8 @@
               v-model="filters.dateFrom"
               label="a partir da data"
               type="date"
+              append-icon="mdi-close"
+              @click:append="appendIconDateFrom"
             ></v-text-field>
           </v-col>
           <v-col cols="12" sm="6" md="2">
@@ -16,6 +18,8 @@
               v-model="filters.dateTo"
               label="até a data"
               type="date"
+              append-icon="mdi-close"
+              @click:append="prependIconDateTo"
             ></v-text-field>
           </v-col>
           <v-col cols="12" sm="6" md="2">
@@ -142,6 +146,12 @@ const applyFilters = async () => {
   }
 };
 
+const appendIconDateFrom = () => {
+  filters.value.dateFrom = '';
+};
+const prependIconDateTo = () => {
+  filters.value.dateTo = '';
+};
 
 onMounted( async () => {
   loading.value = true;
