@@ -98,7 +98,7 @@
 
           <v-list lines="two">
             <v-list-item
-                v-for="transaction in transacoesStore?.canvas?.bank_account_transfers?.slice(-3).reverse()"
+                v-for="transaction in transacoesStore?.canvas?.bank_account_transfers?.slice(0, 3)"
               :key="transaction.id"
               :subtitle="filterDate(transaction.created_at)"
               >
