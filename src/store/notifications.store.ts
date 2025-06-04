@@ -11,7 +11,6 @@ export const useNotificationsStore = defineStore('notifications', () => {
     timeout: 5000,
   });
 
-  // Show notification
   const showNotification = (options: NotificationOptions) => {
     snackbar.value = {
       show: true,
