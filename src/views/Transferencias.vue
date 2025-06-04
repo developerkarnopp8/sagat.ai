@@ -1,26 +1,26 @@
 <template>
   <v-container>
-    <h1 class="text-h4 mb-6">Transfer Money</h1>
+    <h1 class="text-h4 mb-6">Transferir dinheiro</h1>
     
     <v-card class="mx-auto" max-width="600">
       <v-card-text>
         <v-form @submit.prevent="onSubmit">
           <v-select
             v-model="sourceAccount"
-            label="From Account"
+            label="Da conta"
             prepend-inner-icon="mdi-bank-transfer-out"
-            :items="accounts"
-            item-title="bankName"
+            :items="accountsUser"
+            item-title="bank_name"
             item-value="id"
             return-object
           ></v-select>
 
           <v-select
             v-model="destinationAccount"
-            label="To Account"
+            label="Para conta"
             prepend-inner-icon="mdi-bank-transfer-in"
-            :items="accounts.filter(a => a.id !== sourceAccount?.id)"
-            item-title="bankName"
+            :items="accountsAlls.filter(a => a.id !== sourceAccount?.id)"
+            item-title="bank_name"
             item-value="id"
             return-object
             :disabled="!sourceAccount"
@@ -28,16 +28,16 @@
 
           <v-text-field
             v-model="amount"
-            label="Amount"
+            label="Valor"
             prepend-inner-icon="mdi-cash"
-            prefix="$"
+            prefix="R$"
             type="number"
             :disabled="!sourceAccount || !destinationAccount"
           ></v-text-field>
 
           <v-radio-group v-model="transferType" inline>
-            <v-radio label="PIX (Instant)" value="pix"></v-radio>
-            <v-radio label="TED (Same Day)" value="ted"></v-radio>
+            <v-radio label="PIX (Instantâneo)" value="pix"></v-radio>
+            <v-radio label="TED (Mesmo Dia)" value="ted"></v-radio>
           </v-radio-group>
 
           <v-btn 
@@ -46,39 +46,38 @@
             block
             :disabled="!sourceAccount || !destinationAccount || !amount"
           >
-            Transfer Money
+            Transferir dinheiro
           </v-btn>
         </v-form>
       </v-card-text>
     </v-card>
 
-    <!-- Success Dialog -->
     <v-dialog v-model="showSuccessDialog" max-width="400">
       <v-card>
         <v-card-title class="text-h5">
           <v-icon color="success" class="mr-2">mdi-check-circle</v-icon>
-          Transfer Successful
+          Transferência bem-sucedida
         </v-card-title>
         <v-card-text>
-          <p>Your transfer has been processed successfully!</p>
+          <p>Sua transferência foi processada com sucesso!</p>
           <v-list>
             <v-list-item>
-              <v-list-item-title>Amount</v-list-item-title>
+              <v-list-item-title>Valor</v-list-item-title>
               <v-list-item-subtitle>${{ amount }}</v-list-item-subtitle>
             </v-list-item>
             <v-list-item>
-              <v-list-item-title>From</v-list-item-title>
-              <v-list-item-subtitle>{{ sourceAccount?.bankName }}</v-list-item-subtitle>
+              <v-list-item-title>De</v-list-item-title>
+              <v-list-item-subtitle>{{ sourceAccount?.bank_name }}</v-list-item-subtitle>
             </v-list-item>
             <v-list-item>
-              <v-list-item-title>To</v-list-item-title>
-              <v-list-item-subtitle>{{ destinationAccount?.bankName }}</v-list-item-subtitle>
+              <v-list-item-title>Para</v-list-item-title>
+              <v-list-item-subtitle>{{ destinationAccount?.bank_name }}</v-list-item-subtitle>
             </v-list-item>
           </v-list>
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn color="primary" @click="closeSuccessDialog">Done</v-btn>
+          <v-btn color="primary" @click="closeSuccessDialog">Feito</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -86,35 +85,18 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
+import { getDataBank, getDataBankAll } from '@/services/contaBancariaService';
+import { IUserCanvas } from '@/shared/interfaces/ICanvas';
+import { IDataBanco, IDataBancoAll } from '@/shared/interfaces/IDataBanco';
+import { onMounted, ref } from 'vue';
 
-type Account = {
-  id: number;
-  bankName: string;
-  accountNumber: string;
-  accountType: string;
-  balance: number;
-};
+const loading = ref(false);
 
-const accounts = ref<Account[]>([
-  {
-    id: 1,
-    bankName: 'Main Bank',
-    accountNumber: '1234567890',
-    accountType: 'Checking',
-    balance: 5000.00
-  },
-  {
-    id: 2,
-    bankName: 'Savings Bank',
-    accountNumber: '0987654321',
-    accountType: 'Savings',
-    balance: 10000.00
-  }
-]);
+const accountsUser = ref<IDataBanco[]>([]);
+const accountsAlls = ref<IDataBancoAll[]>([]);
 
-const sourceAccount = ref<Account | null>(null);
-const destinationAccount = ref<Account | null>(null);
+const sourceAccount = ref<IDataBanco | null>(null);
+const destinationAccount = ref<IDataBancoAll | null>(null);
 const amount = ref('');
 const transferType = ref('pix');
 const showSuccessDialog = ref(false);
@@ -130,4 +112,27 @@ const closeSuccessDialog = () => {
   amount.value = '';
   transferType.value = 'pix';
 };
+
+
+async function getDataBankUser () {
+  loading.value = true;
+  try {
+    const responseUser = await getDataBank();
+    const responseAll = await getDataBankAll();
+  
+    const userCanvasUser: IUserCanvas = responseUser.data as IUserCanvas;
+    const userCanvasAlls: IUserCanvas = responseAll.data as IUserCanvas;
+    
+    accountsUser.value = userCanvasUser.user_bank_accounts ?? [];
+    accountsAlls.value = userCanvasAlls.user_bank_accounts ?? [];
+  } catch (err) {
+    console.error(err);
+  } finally {
+    loading.value = false;
+  }
+}
+
+onMounted(async () => {
+  await getDataBankUser();
+})
 </script>
