@@ -1,0 +1,69 @@
+import axios, { AxiosResponse } from 'axios';
+import { nextTick } from 'vue';
+
+import { IDeclaracoes, IDeclaracoesFilters } from '../shared/interfaces/IDeclaracoes';
+import { useAuthStore } from '@/store/auth.store';
+import { filterError } from '@/plugins/filtersErrors';
+
+const URL = import.meta.env.VITE_BASE_URL_DEV;
+
+const api = axios.create({
+  baseURL: URL,
+});
+
+export const getDataDeclaracoes = async (prams: IDeclaracoesFilters) => {
+
+  const authStore = useAuthStore();
+  authStore.setLoading(true);
+
+    try {
+        await nextTick();
+        
+        const res = await api.get<IDeclaracoes>(`/users/bank_account_transfers/statements?start_date=${prams.start_date}&end_date=${prams.end_date}&min_value=${prams.min_value}&max_value=${prams.max_value}&transfer_type=${prams.transfer_type}&page=${prams.page}&per_page=${prams.per_page}`, { 
+          headers: {
+              'Content-Type': 'application/json',
+              'Accept': 'application/json',
+              'Authorization': `Bearer ${authStore.token}`,
+              'Cache-Control': 'no-cache',
+          }
+        });
+         
+        return res;
+
+    } catch (error) {
+      filterError(error)
+      console.error('Erro:', error);
+      throw error;
+    } finally {
+        authStore.setLoading(false);
+    }
+};
+
+export const postTransferencias = async (prams: any) => {
+  console.log(prams, 'prams');
+  
+  const authStore = useAuthStore();
+  authStore.setLoading(true);
+
+    try {
+        await nextTick();
+        
+          const res = await api.post<any>(`/users/bank_account_transfers`,  prams , { 
+          headers: {
+              'Content-Type': 'application/json',
+              'Accept': 'application/json',
+              'Authorization': `Bearer ${authStore.token}`,
+              'Cache-Control': 'no-cache',
+          }
+        });
+         
+        return res;
+
+    } catch (error) {
+      filterError(error)
+      console.error('Erro:', error);
+      throw error;
+    } finally {
+        authStore.setLoading(false);
+    }
+};
