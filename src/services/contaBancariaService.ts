@@ -33,8 +33,9 @@ export const getDataBank = async (): Promise<AxiosResponse<{data: IDataBanco}>> 
         return res;
 
     } catch (error) {
-        console.error('Erro:', error);
-        throw error;
+      filterError(error)
+      console.error('Erro:', error);
+      throw error;
     } finally {
         authStore.setLoading(false);
     }

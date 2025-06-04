@@ -1,5 +1,10 @@
 <template>
-  <v-container>
+  <v-progress-linear
+   v-if="loading"
+   color="primary"
+   indeterminate
+ ></v-progress-linear>
+  <v-container v-if="accountsUser.length > 0 && accountsAlls.length > 0">
     <v-row>
       <v-col cols="12" class="d-flex align-center">
         <h1 class="text-h4">Minhas Contas</h1>
@@ -86,15 +91,24 @@ import { IUserCanvas } from '@/shared/interfaces/ICanvas';
 const accountsUser = ref<IDataBanco[]>([]);
 const accountsAlls = ref<IDataBancoAll[]>([]);
 
-async function getDataBankUser () {
-  const responseUser = await getDataBank();
-  const responseAll = await getDataBankAll();
+const loading = ref(false);
 
-  const userCanvasUser: IUserCanvas = responseUser.data as IUserCanvas;
-  const userCanvasAlls: IUserCanvas = responseAll.data as IUserCanvas;
+async function getDataBankUser () {
+  loading.value = true;
+  try {
+    const responseUser = await getDataBank();
+    const responseAll = await getDataBankAll();
   
-  accountsUser.value = userCanvasUser.user_bank_accounts ?? [];
-  accountsAlls.value = userCanvasAlls.user_bank_accounts ?? [];
+    const userCanvasUser: IUserCanvas = responseUser.data as IUserCanvas;
+    const userCanvasAlls: IUserCanvas = responseAll.data as IUserCanvas;
+    
+    accountsUser.value = userCanvasUser.user_bank_accounts ?? [];
+    accountsAlls.value = userCanvasAlls.user_bank_accounts ?? [];
+  } catch (err) {
+    console.error(err);
+  } finally {
+    loading.value = false;
+  }
 }
 
 onMounted(async () => {

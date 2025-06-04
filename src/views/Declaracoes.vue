@@ -123,10 +123,6 @@ const applyFilters = async () => {
   loading.value = true;
 
   try {
-    console.log(filters.value, 'value');
-
-
-    
     const response = await getDataDeclaracoes({
       start_date    : filters.value.dateFrom  || '',
       end_date      : filters.value.dateTo    || '',
@@ -162,8 +158,6 @@ onMounted( async () => {
 
     const declaracoes: IDeclaracoes = response.data; 
     useDeclaraStore.setallTransacoesDeclaracoes(declaracoes, false);
-    console.log(declaracoes);
-    
   } catch (err) {
     console.error('Erro ao carregar transações:', err);
   } finally {
