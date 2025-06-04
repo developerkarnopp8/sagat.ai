@@ -38,3 +38,32 @@ export const getDataDeclaracoes = async (prams: IDeclaracoesFilters) => {
         authStore.setLoading(false);
     }
 };
+
+export const postTransferencias = async (prams: any) => {
+  console.log(prams, 'prams');
+  
+  const authStore = useAuthStore();
+  authStore.setLoading(true);
+
+    try {
+        await nextTick();
+        
+          const res = await api.post<any>(`/users/bank_account_transfers`,  prams , { 
+          headers: {
+              'Content-Type': 'application/json',
+              'Accept': 'application/json',
+              'Authorization': `Bearer ${authStore.token}`,
+              'Cache-Control': 'no-cache',
+          }
+        });
+         
+        return res;
+
+    } catch (error) {
+      filterError(error)
+      console.error('Erro:', error);
+      throw error;
+    } finally {
+        authStore.setLoading(false);
+    }
+};

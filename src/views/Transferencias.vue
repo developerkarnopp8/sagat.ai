@@ -1,7 +1,6 @@
 <template>
   <v-container>
     <h1 class="text-h4 mb-6">Transferir dinheiro</h1>
-    
     <v-card class="mx-auto" max-width="600">
       <v-card-text>
         <v-form @submit.prevent="onSubmit">
@@ -36,8 +35,8 @@
           ></v-text-field>
 
           <v-radio-group v-model="transferType" inline>
-            <v-radio label="PIX (Instantâneo)" value="pix"></v-radio>
-            <v-radio label="TED (Mesmo Dia)" value="ted"></v-radio>
+            <v-radio label="PIX (Instantâneo)" value="1"></v-radio>
+            <v-radio label="TED (Mesmo Dia)" value="2"></v-radio>
           </v-radio-group>
 
           <v-btn 
@@ -85,9 +84,17 @@
 </template>
 
 <script setup lang="ts">
+  
+import { filterError } from '@/plugins/filtersErrors';
+
 import { getDataBank, getDataBankAll } from '@/services/contaBancariaService';
+import { postTransferencias } from '@/services/transferenciasService';
+
 import { IUserCanvas } from '@/shared/interfaces/ICanvas';
 import { IDataBanco, IDataBancoAll } from '@/shared/interfaces/IDataBanco';
+
+import { useAuthStore } from '@/store/auth.store';
+
 import { onMounted, ref } from 'vue';
 
 const loading = ref(false);
@@ -98,11 +105,41 @@ const accountsAlls = ref<IDataBancoAll[]>([]);
 const sourceAccount = ref<IDataBanco | null>(null);
 const destinationAccount = ref<IDataBancoAll | null>(null);
 const amount = ref('');
-const transferType = ref('pix');
+const transferType = ref('1');
+
 const showSuccessDialog = ref(false);
 
-const onSubmit = () => {
-  showSuccessDialog.value = true;
+const authStore = useAuthStore()
+
+const execTranfer = ref({
+  bank_account_transfer: {
+    to_user_bank_account_id: 4,
+    from_user_bank_account_id: 3,
+    transfer_type: 2,
+    amount_to_transfer: 20
+  },
+  make_success: true
+});
+
+const onSubmit = async () => {
+  if (sourceAccount.value && destinationAccount.value && amount.value) {
+    execTranfer.value.bank_account_transfer.from_user_bank_account_id = sourceAccount.value.id;
+    execTranfer.value.bank_account_transfer.to_user_bank_account_id = destinationAccount.value.id;
+    execTranfer.value.bank_account_transfer.amount_to_transfer = Number(amount.value);
+    execTranfer.value.bank_account_transfer.transfer_type = Number(transferType.value);
+    showSuccessDialog.value = true;
+    execTranfer.value.make_success = showSuccessDialog.value;
+  }
+  try {
+    await postTransferencias(execTranfer.value)
+  } catch (error) {
+        filterError(error)
+        console.error('Erro:', error);
+        throw error;
+    }
+    finally {
+        authStore.setLoading(false);
+    }
 };
 
 const closeSuccessDialog = () => {
@@ -110,7 +147,8 @@ const closeSuccessDialog = () => {
   sourceAccount.value = null;
   destinationAccount.value = null;
   amount.value = '';
-  transferType.value = 'pix';
+  transferType.value = '1';
+  console.log(execTranfer.value, 'envio');
 };
 
 
