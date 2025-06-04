@@ -4,46 +4,48 @@
     <v-card class="mb-6">
       <v-card-text>
         <v-row>
-          <v-col cols="12" sm="6" md="2">
+          <v-col cols="12" md="6">
             <v-text-field
               v-model="filters.dateFrom"
               label="a partir da data"
               type="date"
-              append-icon="mdi-close"
+              append-inner-icon="mdi-close"
               @click:append="appendIconDateFrom"
             ></v-text-field>
           </v-col>
-          <v-col cols="12" sm="6" md="2">
+          <v-col cols="12" md="6">
             <v-text-field
               v-model="filters.dateTo"
               label="até a data"
               type="date"
-              append-icon="mdi-close"
+              append-inner-icon="mdi-close"
               @click:append="prependIconDateTo"
             ></v-text-field>
           </v-col>
-          <v-col cols="12" sm="6" md="2">
+        </v-row>
+        <v-row>
+          <v-col cols="12" md="3">
             <v-text-field
               v-model="filters.min_value"
               label="Valor mínimo"
               type="number"
             ></v-text-field>
           </v-col>
-          <v-col cols="12" sm="6" md="2">
+          <v-col cols="12" md="3">
             <v-text-field
               v-model="filters.max_value"
               label="Valor máximo"
               type="number"
             ></v-text-field>
           </v-col>
-          <v-col cols="12" sm="6" md="2">
+          <v-col cols="12" md="3">
             <v-select
               v-model="filters.type"
               label="Tipo tranferência"
               :items="transfer_type"
             ></v-select>
           </v-col>
-          <v-col cols="12" sm="6" md="2">
+          <v-col cols="12" md="3">
             <v-btn color="primary" block @click="applyFilters">
               Filtrar
             </v-btn>

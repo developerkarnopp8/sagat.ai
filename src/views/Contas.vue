@@ -21,18 +21,18 @@
               </v-avatar>
             </template>
             <v-card-title>{{ account.bank_name }}</v-card-title>
-            <v-card-subtitle>{{ account.account_type }}</v-card-subtitle>
+            <v-card-subtitle>{{ account.account_type.charAt(0).toUpperCase() + account.account_type.slice(1) }}</v-card-subtitle>
           </v-card-item>
 
           <v-card-text>
             <div class="d-flex justify-space-between align-center">
               <div>
-                <div class="text-caption text-grey">Account Number</div>
+                <div class="text-caption text-grey">Número de conta</div>
                 <div class="text-body-1">{{ account.account_number }}</div>
               </div>
               <div class="text-right">
-                <div class="text-caption text-grey">Balance</div>
-                <div class="text-h5 font-weight-bold">${{ account.amount.toFixed(2) }}</div>
+                <div class="text-caption text-grey">Saldo</div>
+                <div class="text-h5 font-weight-bold">R$ {{ account.amount.toFixed(2) }}</div>
               </div>
             </div>
           </v-card-text>
@@ -57,19 +57,15 @@
               </v-avatar>
             </template>
             <v-card-title>{{ account.bank_name }}</v-card-title>
-            <v-card-subtitle>{{ account.account_type }}</v-card-subtitle>
+            <v-card-subtitle>{{ account.account_type.charAt(0).toUpperCase() + account.account_type.slice(1) }}</v-card-subtitle>
           </v-card-item>
 
           <v-card-text>
             <div class="d-flex justify-space-between align-center">
               <div>
-                <div class="text-caption text-grey">Account Number</div>
+                <div class="text-caption text-grey">Número da conta</div>
                 <div class="text-body-1">{{ account.account_number }}</div>
               </div>
-              <!-- <div class="text-right">
-                <div class="text-caption text-grey">Balance</div>
-                <div class="text-h5 font-weight-bold">${{ account.amount.toFixed(2) }}</div>
-              </div> -->
             </div>
           </v-card-text>
 

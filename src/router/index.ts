@@ -55,17 +55,26 @@ const router = createRouter({
 })
 
 router.beforeEach((to, _from, next) => {
-    const authStore = useAuthStore();
-    const isAuthenticated = authStore.isAuthenticated;
+  const authStore = useAuthStore();
+  const isAuthenticated = authStore.isAuthenticated;
 
-    if ((to.path !== '/' && to.path !== '/cadastro') && !isAuthenticated) {
-        next('/');
-    } else {
-        const defaultTitle = 'Sagat Pay';
-        document.title = to.meta.title ? `${defaultTitle} | ${to.meta.title}` :  defaultTitle;
-        next();
-        authStore.setLoading(false);
-    }
+  const isPublicPage = to.path === '/' || to.path === '/cadastro';
+  const requiresAuth = to.meta.requiresAuth;
+
+  if (requiresAuth && !isAuthenticated) {
+    return next('/');
+  }
+
+  if (isAuthenticated && isPublicPage) {
+    return next('/painel');
+  }
+
+  const defaultTitle = 'Sagat Pay';
+  document.title = to.meta.title ? `${defaultTitle} | ${to.meta.title}` : defaultTitle;
+
+  authStore.setLoading(false);
+  next();
 });
+
 
 export default router;

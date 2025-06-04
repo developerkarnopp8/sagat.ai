@@ -19,7 +19,7 @@
           </v-card-item>
 
           <v-card-text>
-            <div class="text-h4 mb-2">R${{ account.amount.toFixed(2).replace('.', ',') }}</div>
+            <div class="text-h4 mb-2">R$ {{ account.amount.toFixed(2).replace('.', ',') }}</div>
             <div class="text-subtitle-1 text-grey">
               Conta {{ account.account_type}}
             </div>
