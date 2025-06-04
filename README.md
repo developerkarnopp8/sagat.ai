@@ -74,6 +74,8 @@ OBS: A API precisa estar rodando em paralelo. Para instruções de como subir a 
 - Implementaria testes unitários com Vitest ou Jest
 - Criaria um sistema de notificações globais para erros e sucessos
 - Implementaria dark mode e temas customizáveis
+- Melhoraria a responsividade e acessibilidade do layout
+- Upload e troca de avatar para o usuário
 
 # 🤝 Agradecimentos
 Agradeço pela oportunidade de participar do processo seletivo. Qualquer dúvida ou feedback será muito bem-vindo!
