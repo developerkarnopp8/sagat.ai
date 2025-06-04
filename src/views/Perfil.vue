@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
+import { ref } from 'vue';
 import { useUserStore } from '@/store/user.store';
 import { useNotificationsStore } from '@/store/notifications.store';
 import { useForm } from 'vee-validate';
@@ -10,25 +10,24 @@ const notificationsStore = useNotificationsStore();
 const loading = ref(false);
 const editMode = ref(false);
 
-// Form validation schema
 const schema = yup.object({
   name: yup.string().required('Name is required'),
   email: yup.string().required('Email is required').email('Email must be valid'),
   currentPassword: yup.string().when('$isChangingPassword', {
     is: true,
-    then: () => yup.string().required('Current password is required'),
+    then: () => yup.string().required('A senha atual é obrigatória'),
   }),
   newPassword: yup.string().when('$isChangingPassword', {
     is: true,
     then: () => yup.string()
-      .required('New password is required')
-      .min(6, 'Password must be at least 6 characters'),
+      .required('Nova senha é obrigatória')
+      .min(6, 'A senha deve ter pelo menos 6 caracteres'),
   }),
   confirmPassword: yup.string().when('$isChangingPassword', {
     is: true,
     then: () => yup.string()
-      .required('Please confirm your password')
-      .oneOf([yup.ref('newPassword')], 'Passwords must match'),
+      .required('Por favor confirme sua senha')
+      .oneOf([yup.ref('newPassword')], 'As senhas devem corresponder'),
   }),
 });
 
@@ -43,18 +42,14 @@ const { handleSubmit, errors, setFieldValue, values } = useForm({
   }
 });
 
-// Password visibility toggles
 const showCurrentPassword = ref(false);
 const showNewPassword = ref(false);
 const showConfirmPassword = ref(false);
 
-// Whether user is changing password
 const isChangingPassword = ref(false);
 
-// Toggle edit mode
 const toggleEditMode = () => {
   if (editMode.value) {
-    // Reset form when canceling edit
     setFieldValue('name', userStore?.canvas?.name || '');
     setFieldValue('email', userStore?.canvas?.email || '');
     setFieldValue('currentPassword', '');
@@ -66,7 +61,6 @@ const toggleEditMode = () => {
   editMode.value = !editMode.value;
 };
 
-// Toggle password change form
 const togglePasswordChange = () => {
   isChangingPassword.value = !isChangingPassword.value;
 };
@@ -74,53 +68,13 @@ const togglePasswordChange = () => {
 
 const onSubmit = handleSubmit(async (values: { name: any; email: any; currentPassword: any; newPassword: any; }) => {
   loading.value = true;
-  
-  // try {
-  //   const userData: {
-  //     name: any;
-  //     email: any;
-  //     current_password?: any;
-  //     new_password?: any;
-  //   } = {
-  //     name: values.name,
-  //     email: values.email,
-  //   };
-    
-  //   // Add password data if changing password
-  //   if (isChangingPassword.value) {
-  //     userData.current_password = values.currentPassword;
-  //     userData.new_password = values.newPassword;
-  //   }
-    
-  //   await api.put('/users/infos', userData);
-    
-  //   // Update user in store
-  //   await userStore.getUserInfo();
-    
-  //   notificationsStore.showNotification({
-  //     text: 'Profile updated successfully',
-  //     color: 'success',
-  //   });
-    
-  //   // Exit edit mode
-  //   editMode.value = false;
-  //   isChangingPassword.value = false;
-  // } catch (error) {
-  //   notificationsStore.showNotification({
-  //     text: 'Failed to update profile',
-  //     color: 'error',
-  //   });
-  // } finally {
-  //   loading.value = false;
-  // }
+  setTimeout(() => {
+    loading.value = false;
+    editMode.value = false
+  }, 1000)
+
 });
 
-// onMounted(() => {
-//   // Ensure we have the latest user data
-//   if (userStore.isAuthenticated) {
-//     userStore.getUserInfo();
-//   }
-// });
 </script>
 
 <template>
@@ -153,7 +107,7 @@ const onSubmit = handleSubmit(async (values: { name: any; email: any; currentPas
                 <template v-slot:prepend>
                   <v-icon color="primary">mdi-account</v-icon>
                 </template>
-                <v-list-item-title>Name</v-list-item-title>
+                <v-list-item-title>Nome</v-list-item-title>
                 <v-list-item-subtitle>{{ userStore?.canvas?.name }}</v-list-item-subtitle>
               </v-list-item>
               
@@ -161,7 +115,7 @@ const onSubmit = handleSubmit(async (values: { name: any; email: any; currentPas
                 <template v-slot:prepend>
                   <v-icon color="primary">mdi-email</v-icon>
                 </template>
-                <v-list-item-title>Email</v-list-item-title>
+                <v-list-item-title>E-mail</v-list-item-title>
                 <v-list-item-subtitle>{{ userStore?.canvas?.email }}</v-list-item-subtitle>
               </v-list-item>
               
@@ -169,13 +123,12 @@ const onSubmit = handleSubmit(async (values: { name: any; email: any; currentPas
                 <template v-slot:prepend>
                   <v-icon color="primary">mdi-shield-lock</v-icon>
                 </template>
-                <v-list-item-title>Password</v-list-item-title>
+                <v-list-item-title>Senha (Password)</v-list-item-title>
                 <v-list-item-subtitle>********</v-list-item-subtitle>
               </v-list-item>
             </v-list>
           </v-card-text>
-          
-          <!-- Edit mode -->
+  
           <v-card-text v-else>
             <v-form @submit.prevent="onSubmit">
               <v-text-field
@@ -209,7 +162,7 @@ const onSubmit = handleSubmit(async (values: { name: any; email: any; currentPas
                 <v-text-field
                   v-model="values.currentPassword"
                   :type="showCurrentPassword ? 'text' : 'password'"
-                  label="Current Password"
+                  label="Senha atual"
                   variant="outlined"
                   prepend-inner-icon="mdi-lock"
                   :append-inner-icon="showCurrentPassword ? 'mdi-eye-off' : 'mdi-eye'"
@@ -220,7 +173,7 @@ const onSubmit = handleSubmit(async (values: { name: any; email: any; currentPas
                 <v-text-field
                   v-model="values.newPassword"
                   :type="showNewPassword ? 'text' : 'password'"
-                  label="New Password"
+                  label="Nova Senha"
                   variant="outlined"
                   prepend-inner-icon="mdi-lock-reset"
                   :append-inner-icon="showNewPassword ? 'mdi-eye-off' : 'mdi-eye'"
@@ -231,7 +184,7 @@ const onSubmit = handleSubmit(async (values: { name: any; email: any; currentPas
                 <v-text-field
                   v-model="values.confirmPassword"
                   :type="showConfirmPassword ? 'text' : 'password'"
-                  label="Confirm Password"
+                  label="Confirme a Senha"
                   variant="outlined"
                   prepend-inner-icon="mdi-lock-check"
                   :append-inner-icon="showConfirmPassword ? 'mdi-eye-off' : 'mdi-eye'"
@@ -262,7 +215,7 @@ const onSubmit = handleSubmit(async (values: { name: any; email: any; currentPas
                 @click="toggleEditMode"
                 class="mr-2"
               >
-                Cancel
+                Cancelar
               </v-btn>
               
               <v-btn
